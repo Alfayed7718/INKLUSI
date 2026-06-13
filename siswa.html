@@ -2,6 +2,8 @@
 <html lang="id">
 
 <head>
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#6C63FF">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
     <title>INKLUSI App - Media Pembelajaran Multisensori ABK</title>
@@ -852,7 +854,7 @@
             try {
                 const isLoggedIn = localStorage.getItem('loggedIn') === 'true';
                 if (!isLoggedIn) {
-                    window.location.replace('Index.html');
+                    window.location.replace('index.html');
                 }
             } catch (e) {
                 console.error('Login redirect failed', e);
@@ -1204,7 +1206,7 @@
         });
         let readM = false; document.getElementById('read-mode')?.addEventListener('click', () => { readM = !readM; if (readM) document.body.classList.add('read-mode'); else document.body.classList.remove('read-mode'); });
         document.getElementById('nav-toggle')?.addEventListener('click', () => { document.getElementById('nav-menu').classList.toggle('show'); });
-        document.getElementById('logout')?.addEventListener('click', () => { localStorage.removeItem('loggedIn'); window.location.replace('Index.html'); });
+        document.getElementById('logout')?.addEventListener('click', () => { localStorage.removeItem('loggedIn'); window.location.replace('index.html'); });
 
         // Load data
         (function init() {

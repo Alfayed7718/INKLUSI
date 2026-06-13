@@ -1,9 +1,12 @@
 const CACHE_NAME = 'inklusi-app-v1';
 const urlsToCache = [
   '/',
-  '/index.html',
-  '/style.css',
-  '/script.js'
+  'index.html',
+  'admin.html',
+  'siswa.html',
+  'data.json',
+  'tampilan.css',
+  'manifest.json'
 ];
 
 self.addEventListener('install', event => {
