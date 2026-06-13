@@ -963,7 +963,7 @@
             try {
                 const isLoggedIn = localStorage.getItem('loggedIn') === 'true';
                 if (!isLoggedIn) {
-                    window.location.replace('index.html');
+                    window.location.replace('Index.html');
                 }
             } catch (e) {
                 console.error('Login redirect failed', e);
@@ -1186,7 +1186,7 @@
             link.addEventListener('click', () => {
                 document.getElementById('nav-menu').classList.remove('show');
             });
-        }); document.getElementById('logout')?.addEventListener('click', () => { localStorage.removeItem('loggedIn'); window.location.replace('index.html'); });
+        }); document.getElementById('logout')?.addEventListener('click', () => { localStorage.removeItem('loggedIn'); window.location.replace('Index.html'); });
 
         // Load data
         ; (async function init() {
