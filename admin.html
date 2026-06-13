@@ -964,8 +964,8 @@
     <script>
         (function requireLogin() {
             try {
-                const isLoggedIn = sessionStorage.getItem('loggedIn') === 'true';
-                const isAdmin = sessionStorage.getItem('isAdmin') === 'true';
+                const isLoggedIn = localStorage.getItem('loggedIn') === 'true';
+                const isAdmin = localStorage.getItem('isAdmin') === 'true';
                 if (!isLoggedIn || !isAdmin) {
                     window.location.replace('index.html');
                 }
@@ -1193,8 +1193,17 @@
         });
 
         document.getElementById('logout')?.addEventListener('click', () => {
-            sessionStorage.removeItem('loggedIn');
-            sessionStorage.removeItem('isAdmin');
+
+            localStorage.removeItem('loggedIn');
+            localStorage.removeItem('isAdmin');
+
+            localStorage.removeItem('userNISN');
+            localStorage.removeItem('userName');
+            localStorage.removeItem('userClass');
+            localStorage.removeItem('userLevel');
+            localStorage.removeItem('userAge');
+            localStorage.removeItem('userDisability');
+
             window.location.replace('index.html');
         });
 

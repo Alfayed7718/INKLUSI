@@ -14,9 +14,9 @@
     <script>
         // Jika sudah login di tab ini, arahkan sesuai level (admin -> admin.html, selainnya -> siswa.html)
         (function () {
-            const logged = sessionStorage.getItem('loggedIn') === 'true';
+            const logged = localStorage.getItem('loggedIn') === 'true';
             if (!logged) return;
-            if (sessionStorage.getItem('isAdmin') === 'true') {
+            if (localStorage.getItem('isAdmin') === 'true') {
                 window.location.replace('admin.html');
             } else {
                 window.location.replace('siswa.html');
@@ -101,8 +101,8 @@
                 return;
             }
             const isAdmin = String(account.level).toLowerCase() === 'admin';
-            sessionStorage.setItem('loggedIn', 'true');
-            sessionStorage.setItem('isAdmin', isAdmin ? 'true' : 'false');
+            localStorage.setItem('loggedIn', 'true');
+            localStorage.setItem('isAdmin', isAdmin ? 'true' : 'false');
             localStorage.setItem('userNISN', String(account.nisn));
             localStorage.setItem('userName', account.nama || '');
             localStorage.setItem('userClass', account.kelas || '');
