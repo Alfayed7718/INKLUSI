@@ -1189,62 +1189,53 @@
             link.addEventListener('click', () => {
                 document.getElementById('nav-menu').classList.remove('show');
             });
-        }); document.getElementById('logout')?.addEventListener('click', () => {
+        });
+
+        document.getElementById('logout')?.addEventListener('click', () => {
             localStorage.clear();
             window.location.replace('index.html');
-            // Load data
-            ; (async function init() {
-                let savedFont = localStorage.getItem('fontSize');
-                if (savedFont) { currentFont = parseInt(savedFont); document.body.style.fontSize = currentFont + 'px'; }
-                let savedPage = localStorage.getItem('currPage');
-                const savedDis = localStorage.getItem('userDisability');
-                if (savedDis) {
-                    const normalizedDis = normalizeDisability(savedDis);
-                    userDisability = normalizedDis;  // Set ke variable global
-                    localStorage.setItem('userDisability', normalizedDis);
-                    const disEl = document.getElementById('user-disability');
-                    if (disEl) { disEl.value = normalizedDis; disEl.disabled = true; }
-                }
-                const isAdmin = localStorage.getItem('isAdmin') === 'true';
-                const savedNisn = localStorage.getItem('userNISN');
-                const savedName = localStorage.getItem('userName');
-                const nameEl = document.getElementById('user-name');
-                const idEl = document.getElementById('nisn');
-                if (nameEl && savedName) {
-                    nameEl.value = savedName;
-                }
-                if (idEl && savedNisn) {
-                    idEl.value = savedNisn;
-                }
-                if (isAdmin && savedNisn) {
-                    // Ambil profil admin dari datasiswa.json (level Admin). Jika gagal, fallback ke localStorage.
-                    try {
-                        const response = await fetch('data.json');
-                        if (response.ok) {
-                            const users = await response.json();
-                            const admin = users.find(a => String(a.nisn) === String(savedNisn) && String(a.level).toLowerCase() === 'admin');
-                            if (admin) {
-                                if (nameEl) nameEl.value = admin.nama || savedName || '';
-                                if (idEl) idEl.value = String(admin.nisn) || savedNisn;
-                                localStorage.setItem('userName', admin.nama || savedName || '');
-                                localStorage.setItem('userNISN', String(admin.nisn));
-                            } else {
-                                if (nameEl) nameEl.value = savedName || '';
-                                if (idEl) idEl.value = savedNisn || '';
-                            }
-                        } else {
-                            if (nameEl) nameEl.value = savedName || '';
-                            if (idEl) idEl.value = savedNisn || '';
-                        }
-                    } catch (err) {
-                        console.error('Gagal memuat profil admin:', err);
-                        if (nameEl) nameEl.value = savedName || '';
-                        if (idEl) idEl.value = savedNisn || '';
-                    }
-                }
-                updateProgress();
-            })();
         });
+
+        async function initAdminPage() {
+            let savedFont = localStorage.getItem('fontSize');
+            if (savedFont) { currentFont = parseInt(savedFont, 10); document.body.style.fontSize = currentFont + 'px'; }
+            let savedPage = localStorage.getItem('currPage');
+            const savedDis = localStorage.getItem('userDisability');
+            if (savedDis) {
+                const normalizedDis = normalizeDisability(savedDis);
+                userDisability = normalizedDis;
+                localStorage.setItem('userDisability', normalizedDis);
+                const disEl = document.getElementById('user-disability');
+                if (disEl) { disEl.value = normalizedDis; disEl.disabled = true; }
+            }
+            const isAdmin = localStorage.getItem('isAdmin') === 'true';
+            const savedNisn = localStorage.getItem('userNISN');
+            const savedName = localStorage.getItem('userName');
+            const nameEl = document.getElementById('user-name');
+            const idEl = document.getElementById('nisn');
+            if (nameEl) nameEl.value = savedName || '';
+            if (idEl) idEl.value = savedNisn || '';
+            if (isAdmin && savedNisn) {
+                try {
+                    const response = await fetch('data.json');
+                    if (response.ok) {
+                        const users = await response.json();
+                        const admin = users.find(a => String(a.nisn) === String(savedNisn) && String(a.level).toLowerCase() === 'admin');
+                        if (admin) {
+                            if (nameEl) nameEl.value = admin.nama || savedName || '';
+                            if (idEl) idEl.value = String(admin.nisn) || savedNisn;
+                            localStorage.setItem('userName', admin.nama || savedName || '');
+                            localStorage.setItem('userNISN', String(admin.nisn));
+                        }
+                    }
+                } catch (err) {
+                    console.error('Gagal memuat profil admin:', err);
+                }
+            }
+            if (typeof updateProgress === 'function') updateProgress();
+        }
+
+        initAdminPage();
     </script>
 </body>
 
