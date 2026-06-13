@@ -962,10 +962,13 @@
     <script>
         (function requireLogin() {
             try {
-                if (localStorage.getItem('loggedIn') !== 'true') {
+                const isLoggedIn = localStorage.getItem('loggedIn') === 'true';
+                if (!isLoggedIn) {
                     window.location.replace('login.html');
                 }
-            } catch (e) { }
+            } catch (e) {
+                console.error('Login redirect failed', e);
+            }
         })();
     </script>
     <header>
