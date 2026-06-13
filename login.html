@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>LOGIN INKLUSI</title>
+    <link rel="stylesheet" href="login.css" />
+</head>
+
+<body>
+    <script>
+        // Jika sudah login, arahkan sesuai level (admin -> admin.html, selainnya -> index.html)
+        (function () {
+            const logged = localStorage.getItem('loggedIn') === 'true';
+            if (!logged) return;
+            if (localStorage.getItem('isAdmin') === 'true') {
+                window.location.replace('admin.html');
+            } else {
+                window.location.replace('index.html');
+            }
+        })();
+    </script>
+    <div class="container">
+        <div class="form-container">
+            <div class="form-header">
+                <p>Lengkapi Data</p>
+                <h1>Login</h1>
+            </div>
+
+            <form id="login-form" class="form-box">
+                <div class="input-group">
+                    <input type="text" id="nisn" class="input-field" placeholder=" " required />
+                    <label for="nisn" class="floating-label">NISN</label>
+                </div>
+                <div class="input-group">
+                    <input type="password" id="password" class="input-field" placeholder="" required />
+                    <label for="password" class="floating-label">Password</label>
+                    <div class="eye-icon" onclick="togglePassword()">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"
+                            class="lucide lucide-eye-icon lucide-eye">
+                            <path
+                                d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0" />
+                            <circle cx="12" cy="12" r="3" />
+                        </svg>
+                    </div>
+                </div>
+                <!-- pilihan disabilitas -->
+                <!-- <div class="disabil">
+                    <select id="disability">
+                        <option value="visual">Tunanetra</option>
+                        <option value="hearing">Tunarungu/Tunawicara</option>
+                        <option value="intellectual">Tunagrahita</option>
+                    </select>
+                </div> -->
+                <button type="submit" class="form-btn form-btn--submit">Login</button>
+            </form>
+        </div>
+    </div>
+</body>
+
+<script>
+    function togglePassword() {
+        const passwordInput = document.getElementById("password");
+        const eyeIcon = document.querySelector(".eye-icon");
+
+        if (passwordInput.type === "password") {
+            passwordInput.type = "text";
+            eyeIcon.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-eye-off-icon lucide-eye-off"><path d="M10.733 5.076a10.744 10.744 0 0 1 11.205 6.575 1 1 0 0 1 0 .696 10.747 10.747 0 0 1-1.444 2.49"/><path d="M14.084 14.158a3 3 0 0 1-4.242-4.242"/><path d="M17.479 17.499a10.75 10.75 0 0 1-15.417-5.151 1 1 0 0 1 0-.696 10.75 10.75 0 0 1 4.446-5.143"/><path d="m2 2 20 20"/></svg>`;
+        } else {
+            passwordInput.type = "password";
+            eyeIcon.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-eye-icon lucide-eye"><path d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0"/><circle cx="12" cy="12" r="3"/></svg>`;
+        }
+    }
+
+    function mapKondisiToAppCode(kondisi) {
+        return {
+            tunanetra: 'visual',
+            tunarungu: 'hearing',
+            tunagrahita: 'intellectual'
+        }[String(kondisi).toLowerCase()] || 'other';
+    }
+
+    document.getElementById('login-form')?.addEventListener('submit', async function (e) {
+        e.preventDefault();
+        const nisn = document.getElementById('nisn').value.trim();
+        const pwd = document.getElementById('password').value.trim();
+        if (!nisn || !pwd) {
+            alert('Masukkan NISN dan Password');
+            return;
+        }
+        try {
+            const response = await fetch('datasiswa.json');
+            if (!response.ok) throw new Error('Tidak dapat memuat data NISN.');
+            const users = await response.json();
+            const account = users.find(user => String(user.nisn) === nisn && String(user.password) === pwd);
+            if (!account) {
+                alert('NISN atau Password salah. Silakan coba lagi.');
+                return;
+            }
+            const isAdmin = String(account.level).toLowerCase() === 'admin';
+            localStorage.setItem('loggedIn', 'true');
+            localStorage.setItem('isAdmin', isAdmin ? 'true' : 'false');
+            localStorage.setItem('userNISN', String(account.nisn));
+            localStorage.setItem('userName', account.nama || '');
+            localStorage.setItem('userClass', account.kelas || '');
+            localStorage.setItem('userLevel', account.level || '');
+            if (account.usia !== undefined) localStorage.setItem('userAge', String(account.usia));
+            localStorage.setItem('userDisability', mapKondisiToAppCode(account.kondisi));
+            if (isAdmin) {
+                window.location.replace('admin.html');
+            } else {
+                window.location.replace('index.html');
+            }
+        } catch (err) {
+            console.error(err);
+            alert('Gagal memverifikasi login. Pastikan data tersedia.');
+        }
+    });
+</script>
+
+</html>

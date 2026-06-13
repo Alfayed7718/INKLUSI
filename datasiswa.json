@@ -1,0 +1,232 @@
+[
+  {
+    "nama": "Dody Al Fayed",
+    "nisn": 17336,
+    "level": "Admin",
+    "password": "12012008"
+  },
+  {
+    "nama": "Cesa Ideliea",
+    "nisn": 17310,
+    "level": "Admin",
+    "password": "15022008"
+  },
+  {
+    "nama": "Rafif Fawwaz",
+    "nisn": 17550,
+    "level": "Admin",
+    "password": "18032008"
+  },
+  {
+    "nama": "Hafizh Al'Adiyat",
+    "nisn": 17250,
+    "level": "Admin",
+    "password": "21042008"
+  },
+  {
+    "nama": "Arif Danuarta",
+    "nisn": 17439,
+    "level": "Admin",
+    "password": "25052008"
+  },
+  {
+    "nama": "Fata Al Dhemas",
+    "nisn": 17356,
+    "level": "Admin",
+    "password": "27062008"
+  },
+  {
+    "nama": "Maulidya Zahra",
+    "nisn": 17429,
+    "level": "Admin",
+    "password": "29072008"
+  },
+  {
+    "nama": "Ratu Malika",
+    "nisn": 17555,
+    "level": "Admin",
+    "password": "30082008"
+  },
+  {
+    "nama": "Syafiqu Ramadhan",
+    "nisn": 17490,
+    "level": "Admin",
+    "password": "02092008"
+  },
+  {
+    "nama": "Atha Nandana",
+    "nisn": 17284,
+    "level": "Admin",
+    "password": "10102008"
+  },
+  {
+    "nama": "ABDUL AZIZ AL GHIFARI MAULANA",
+    "usia": "10",
+    "nisn": 17217,
+    "kondisi":"tunanetra",
+    "level": "siswa",
+    "password": "10102008"
+  },
+  {
+    "nama": "ATHIRA CAMILLIA SAUSANY",
+    "usia": "10",
+    "nisn": 17285,
+    "kondisi":"tunanetra",
+    "level": "siswa",
+    "password": "10102008"
+  },
+  {
+    "nama": "DANISH AHMAD NADIFA",
+    "usia": "10",
+    "nisn": 17322,
+    "kondisi":"tunanetra",
+    "level": "siswa",
+    "password": "10102008"
+  },
+  {
+    "nama": "DEVIA CANTIKA",
+    "usia": "3",
+    "nisn": 17327,
+    "kondisi":"tunanetra",
+    "level": "siswa",
+    "password": "10102008"
+  },
+  {
+    "nama": "HALWA QOTHRUNNADA",
+    "usia": "5",
+    "nisn": 17373,
+    "kondisi":"tunarungu",
+    "level": "siswa",
+    "password": "10102008"
+  },
+  {
+    "nama": "IRSYAAD IBRAHIM",
+    "usia": "10",
+    "nisn": 17385,
+    "kondisi":"tunarungu",
+    "level": "siswa",
+    "password": "10102008"
+  },
+  {
+    "nama": "KHOIRUN UMMAH ANANDA AULIA",
+    "usia": "6",
+    "nisn": 17401,
+    "kondisi":"tunarungu",
+    "level": "siswa",
+    "password": "10102008"
+  },
+  {
+    "nama": "MAYDITTA MULYA",
+    "usia": "4",
+    "nisn": 17430,
+    "kondisi":"tunarungu",
+    "level": "siswa",
+    "password": "10102008"
+  },
+  {
+    "nama": "MUHAMMAD ARMY FARELL NASRUDIN",
+    "usia": "8",
+    "nisn": 17460,
+    "kondisi":"tunarungu",
+    "level": "siswa",
+    "password": "10102008"
+  },
+  {
+    "nama": "MUHAMMAD NARARYA WINTAWAN",
+    "usia": "9",
+    "nisn": 17485,
+    "kondisi":"tunagrahita",
+    "level": "siswa",
+    "password": "10102008"
+  },
+  {
+    "nama": "ACHMAD NOVIANTO PURWANDI",
+    "usia": "11",
+    "nisn": 17223,
+    "kondisi":"tunagrahita",
+    "level": "siswa",
+    "password": "10102008"
+  },
+  {
+    "nama": "AGASTYA RUSYDA GHANI",
+    "usia": "10",
+    "nisn": 17235,
+    "kondisi":"tunagrahita",
+    "level": "siswa",
+    "password": "10102008"
+  },
+  {
+    "nama": "ALMIRA RAISSA PUTRI",
+    "usia": "5",
+    "nisn": 17255,
+    "kondisi":"tunagrahita",
+    "level": "siswa",
+    "password": "10102008"
+  },
+  {
+    "nama": "DIANA ASTRI JULIAS VINA",
+    "usia": "3",
+    "nisn": 17333,
+    "kondisi":"tunagrahita",
+    "level": "siswa",
+    "password": "10102008"
+  },
+  {
+    "nama": "INTAN AZZAHRA PERMATASARI",
+    "usia": "4",
+    "nisn": 17384,
+    "kondisi":"tunagrahita",
+    "level": "siswa",
+    "password": "10102008"
+  },
+  {
+    "nama": "KEYZIA FITR ALMAIRA",
+    "usia": "5",
+    "nisn": 17398,
+    "kondisi":"tunagrahita",
+    "level": "siswa",
+    "password": "10102008"
+  },
+  {
+    "nama": "MUHAMMAD FATAHILLAH ALI",
+    "usia": "11",
+    "nisn": 17469,
+    "kondisi":"tunagrahita",
+    "level": "siswa",
+    "password": "10102008"
+  },
+  {
+    "nama": "MUHAMAD WISNU FAUZI MAULANA",
+    "usia": "10",
+    "nisn": 17451,
+    "kondisi":"tunagrahita",
+    "level": "siswa",
+    "password": "10102008"
+  },
+  {
+    "nama": "NAGITA KEYLA RHAMADANI",
+    "usia": "4",
+    "nisn": 17502,
+    "kondisi":"tunagrahita",
+    "level": "siswa",
+    "password": "10102008"
+  },
+  {
+    "nama": "RAFIF FAWWAZ ADZKIYA",
+    "usia": "10",
+    "nisn": 17513,
+    "kondisi":"tunagrahita",
+    "level": "siswa",
+    "password": "10102008"
+  },
+  {
+    "nama": "RIFQI MUZHAFFAR AL GHIFARY",
+    "usia": "10",
+    "nisn": 17569,
+    "kondisi":"tunagrahita",
+    "level": "siswa",
+    "password": "10102008"
+  }
+]
+
+
