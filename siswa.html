@@ -852,7 +852,7 @@
     <script>
         (function requireLogin() {
             try {
-                const isLoggedIn = localStorage.getItem('loggedIn') === 'true';
+                const isLoggedIn = sessionStorage.getItem('loggedIn') === 'true';
                 if (!isLoggedIn) {
                     window.location.replace('index.html');
                 }
@@ -1205,7 +1205,11 @@
         });
         let readM = false; document.getElementById('read-mode')?.addEventListener('click', () => { readM = !readM; if (readM) document.body.classList.add('read-mode'); else document.body.classList.remove('read-mode'); });
         document.getElementById('nav-toggle')?.addEventListener('click', () => { document.getElementById('nav-menu').classList.toggle('show'); });
-        document.getElementById('logout')?.addEventListener('click', () => { localStorage.removeItem('loggedIn'); window.location.replace('index.html'); });
+        document.getElementById('logout')?.addEventListener('click', () => {
+            sessionStorage.removeItem('loggedIn');
+            sessionStorage.removeItem('isAdmin');
+            window.location.replace('index.html');
+        });
 
         // Load data
         (function init() {

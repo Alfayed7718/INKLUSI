@@ -12,14 +12,14 @@
 
 <body>
     <script>
-        // Jika sudah login, arahkan sesuai level (admin -> admin.html, selainnya -> index.html)
+        // Jika sudah login di tab ini, arahkan sesuai level (admin -> admin.html, selainnya -> siswa.html)
         (function () {
-            const logged = localStorage.getItem('loggedIn') === 'true';
+            const logged = sessionStorage.getItem('loggedIn') === 'true';
             if (!logged) return;
-            if (localStorage.getItem('isAdmin') === 'true') {
+            if (sessionStorage.getItem('isAdmin') === 'true') {
                 window.location.replace('admin.html');
             } else {
-                window.location.replace('index.html');
+                window.location.replace('siswa.html');
             }
         })();
     </script>
@@ -101,8 +101,8 @@
                 return;
             }
             const isAdmin = String(account.level).toLowerCase() === 'admin';
-            localStorage.setItem('loggedIn', 'true');
-            localStorage.setItem('isAdmin', isAdmin ? 'true' : 'false');
+            sessionStorage.setItem('loggedIn', 'true');
+            sessionStorage.setItem('isAdmin', isAdmin ? 'true' : 'false');
             localStorage.setItem('userNISN', String(account.nisn));
             localStorage.setItem('userName', account.nama || '');
             localStorage.setItem('userClass', account.kelas || '');

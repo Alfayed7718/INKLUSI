@@ -964,8 +964,9 @@
     <script>
         (function requireLogin() {
             try {
-                const isLoggedIn = localStorage.getItem('loggedIn') === 'true';
-                if (!isLoggedIn) {
+                const isLoggedIn = sessionStorage.getItem('loggedIn') === 'true';
+                const isAdmin = sessionStorage.getItem('isAdmin') === 'true';
+                if (!isLoggedIn || !isAdmin) {
                     window.location.replace('index.html');
                 }
             } catch (e) {
@@ -1192,7 +1193,8 @@
         });
 
         document.getElementById('logout')?.addEventListener('click', () => {
-            localStorage.clear();
+            sessionStorage.removeItem('loggedIn');
+            sessionStorage.removeItem('isAdmin');
             window.location.replace('index.html');
         });
 
