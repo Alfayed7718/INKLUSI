@@ -200,6 +200,7 @@
             background: none;
             -webkit-background-clip: unset;
         }
+
         /* Navigasi */
         .nav-menu {
             display: flex;
@@ -371,115 +372,6 @@
         .feature-card h2 {
             margin: 10px 0;
             color: var(--primary-dark);
-        }
-
-        .nilai-tabs {
-            position: fixed;
-            inset: 0;
-            background: rgba(0, 0, 0, 0.55);
-            display: none;
-            align-items: center;
-            justify-content: center;
-            z-index: 1100;
-            padding: 20px;
-        }
-
-        .nilai-tabs-container {
-            width: 100%;
-            height: 100%;
-            max-width: 100%;
-            max-height: 100%;
-            overflow: hidden;
-            background: var(--card-bg);
-            border-radius: 0;
-            box-shadow: none;
-            display: flex;
-            flex-direction: column;
-            border: none;
-        }
-
-        .nilai-tab-header {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            flex-wrap: wrap;
-            padding: 18px 20px;
-            background: linear-gradient(135deg, #F5F5FF, #EDE7FF);
-            border-bottom: 1px solid rgba(0, 0, 0, 0.08);
-        }
-
-        .nilai-tab-btn,
-        .close-nilai-tabs {
-            border: none;
-            cursor: pointer;
-            border-radius: 999px;
-            padding: 12px 18px;
-            font-weight: 700;
-            transition: transform 0.2s ease, background 0.2s ease;
-        }
-
-        .nilai-tab-btn {
-            background: rgba(255, 255, 255, 0.85);
-            color: var(--text);
-        }
-
-        .nilai-tab-btn.active {
-            background: linear-gradient(135deg, var(--primary), var(--primary-light));
-            color: white;
-        }
-
-        .nilai-tab-btn:hover,
-        .close-nilai-tabs:hover {
-            transform: translateY(-1px);
-        }
-
-        .close-nilai-tabs {
-            margin-left: auto;
-            background: var(--danger);
-            color: white;
-            font-size: 1.1rem;
-        }
-
-        .nilai-tab-content {
-            display: none;
-            padding: 30px 28px;
-            overflow-y: auto;
-            flex: 1;
-        }
-
-        .nilai-tab-content.active {
-            display: block;
-        }
-
-        .nilai-tab-content h2 {
-            margin-bottom: 16px;
-        }
-
-        .nilai-tab-content p {
-            line-height: 1.75;
-            color: var(--text-light);
-        }
-
-        .nilai-tab-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
-        }
-
-        .nilai-tab-table th,
-        .nilai-tab-table td {
-            border: 1px solid rgba(0, 0, 0, 0.12);
-            padding: 14px 16px;
-            text-align: left;
-        }
-
-        .nilai-tab-table th {
-            background: rgba(108, 99, 255, 0.08);
-            font-weight: 700;
-        }
-
-        .nilai-tab-table tbody tr:hover {
-            background: rgba(108, 99, 255, 0.05);
         }
 
         /* SDG Info */
@@ -773,17 +665,30 @@
             }
 
             .accessibility-tools {
-                justify-content: space-between;
                 width: 100%;
+                justify-content: space-between;
                 gap: 10px;
             }
 
             .accessibility-tools button {
                 flex: 1 1 48%;
+                min-width: 0;
             }
 
             main {
                 padding: 24px 18px;
+            }
+
+            .hero {
+                padding: 42px 24px;
+            }
+
+            .hero h1 {
+                font-size: 2.3rem;
+            }
+
+            .hero p {
+                font-size: 1.1rem;
             }
 
             .features {
@@ -792,6 +697,65 @@
 
             .feature-card {
                 padding: 24px 18px;
+            }
+
+            .feature-icon {
+                font-size: 3.5rem;
+            }
+
+            .level-selector {
+                flex-direction: column;
+                gap: 12px;
+            }
+
+            .level-btn {
+                width: 100%;
+            }
+
+            .subject-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .subject-card {
+                padding: 24px 18px;
+            }
+
+            .play-btn {
+                width: 100%;
+                padding: 12px 0;
+            }
+
+            .learning-area {
+                padding: 30px 18px;
+            }
+
+            .lesson-card {
+                padding: 26px;
+                margin: 0 0 20px;
+            }
+
+            .lesson-text {
+                font-size: 1.1rem;
+            }
+
+            .lesson-images div {
+                font-size: 3rem;
+                padding: 12px;
+            }
+
+            .accessibility-controls {
+                flex-direction: column;
+            }
+
+            .accessibility-controls button {
+                width: 100%;
+                padding: 12px 16px;
+            }
+
+            #close-learning {
+                top: 16px;
+                right: 16px;
+                padding: 10px 18px;
             }
 
             .profile-form {
@@ -803,100 +767,65 @@
                 font-size: 0.95rem;
             }
 
-            .nilai-tab-header {
-                flex-wrap: wrap;
-                padding: 16px;
-            }
-
-            .nilai-tab-btn,
-            .close-nilai-tabs {
-                flex: 1 1 45%;
-                min-width: 140px;
-            }
-
-            .close-nilai-tabs {
-                margin-left: 0;
-                width: auto;
-                align-self: flex-end;
-            }
-
-            .nilai-tab-content {
-                padding: 22px;
+            .help-content {
+                padding: 24px;
             }
         }
 
         @media (max-width: 768px) {
-
-            .header-container {
-                flex-direction: column;
-                align-items: stretch;
-            }
-
-            #nav-toggle {
-                display: block;
-                width: 100%;
-            }
-
-            nav {
-                width: 100%;
-            }
-
             .nav-menu {
                 display: none;
                 flex-direction: column;
                 width: 100%;
                 background: var(--primary);
-                padding: 10px;
-                border-radius: 15px;
-                gap: 10px;
+                padding: 15px;
+                border-radius: 20px;
             }
 
             .nav-menu.show {
                 display: flex;
             }
 
-            .nav-menu li {
-                width: 100%;
+            #nav-toggle {
+                display: block;
             }
 
             .nav-menu li a {
-                display: block;
+                padding: 12px 16px;
                 width: 100%;
                 text-align: center;
-                padding: 12px;
-            }
-
-            .accessibility-tools {
-                width: 100%;
-                justify-content: center;
-                flex-wrap: wrap;
             }
 
             .hero h1 {
-                font-size: 1.8rem;
+                font-size: 1.9rem;
             }
 
-            .lesson-text {
+            .hero p {
                 font-size: 1rem;
             }
-        }
 
-        @media (max-width: 600px) {
-            .header-container {
-                gap: 12px;
+            .feature-card {
+                padding: 20px 16px;
             }
 
-            .logo {
-                font-size: 1.3rem;
+            .features {
+                grid-template-columns: 1fr;
             }
 
-            .nav-menu li a {
-                padding: 10px 14px;
-                font-size: 0.95rem;
+            .subject-card {
+                padding: 22px 16px;
+            }
+
+            .subject-icon {
+                font-size: 3rem;
+            }
+
+            .level-selector {
+                gap: 10px;
             }
 
             .accessibility-tools {
-                gap: 8px;
+                gap: 6px;
             }
 
             .accessibility-tools button {
@@ -904,48 +833,8 @@
                 font-size: 0.95rem;
             }
 
-            .feature-card {
-                padding: 20px 16px;
-            }
-
-            .feature-icon {
-                font-size: 3rem;
-            }
-
-            .features {
-                grid-template-columns: 1fr;
-            }
-
-            .nilai-tabs {
-                padding: 12px;
-            }
-
-            .nilai-tabs-container {
-                border-radius: 0;
-            }
-
-            .nilai-tab-header {
-                padding: 12px;
-            }
-
-            .nilai-tab-btn,
-            .close-nilai-tabs {
-                padding: 10px 12px;
-                font-size: 0.95rem;
-                min-width: 100px;
-            }
-
-            .close-nilai-tabs {
-                width: 100%;
-                margin-left: 0;
-            }
-
-            .nilai-tab-content {
-                padding: 16px;
-            }
-
-            .profile-form {
-                padding: 18px;
+            .help-section {
+                padding: 14px;
             }
 
             footer {
@@ -974,83 +863,190 @@
         <div class="header-container">
             <div class="logo"><a href="#" data-page="home" style="text-decoration: none; color: #FFF;">🌈 INKLUSI App |
                     Belajar Asyik Untuk Semua</a></div>
-            <button id="nav-toggle" aria-label="Menu">☰ </button>
+            <button id="nav-toggle" aria-label="Menu">☰ Menu</button>
             <nav>
                 <ul id="nav-menu" class="nav-menu">
                     <li><a href="#" data-page="home">🏠 Beranda</a></li>
-                    <!-- <li><a href="#" data-page="learn">📚 Belajar</a></li> -->
+                    <li><a href="#" data-page="learn">📚 Belajar</a></li>
                     <li><a href="#" data-page="profile">👤 Profil</a></li>
-                    <!-- <li><a href="#" data-page="help">❓ Bantuan</a></li> -->
+                    <li><a href="#" data-page="help">❓ Bantuan</a></li>
                 </ul>
             </nav>
             <div class="accessibility-tools">
                 <button id="font-plus" aria-label="Perbesar teks">A+</button>
                 <button id="font-minus" aria-label="Perkecil teks">A-</button>
                 <button id="high-contrast" aria-label="Mode kontras">🌓 Kontras</button>
-                <!-- <button id="read-mode" aria-label="Mode baca">📖 Mode Baca</button> -->
+                <button id="read-mode" aria-label="Mode baca">📖 Mode Baca</button>
                 <button id="logout" aria-label="Keluar">🔓 Logout</button>
             </div>
         </div>
     </header>
 
     <main id="main-content">
-        <!-- Penilaian -->
+        <!-- Halaman Beranda -->
         <section id="home-page" class="page active">
+            <div class="hero">
+                <h1>✨ Selamat Datang di INKLUSI App ✨</h1>
+                <p>Media Pembelajaran Digital Multisensori untuk ABK | SDG 4</p>
+                <button class="cta-button" data-page="learn">🚀 Mulai Belajar</button>
+            </div>
             <div class="features">
-                <div class="feature-card" tabindex="0" data-condition="tunanetra">
+                <div class="feature-card" tabindex="0">
                     <span class="feature-icon">👁️✨</span>
-                    <h2>Nilai Tunanetra</h2>
+                    <h2>Untuk Tunanetra</h2>
+                    <p>🔊 Panduan Audio &nbsp;|&nbsp; 📳 Getaran &nbsp;|&nbsp; 🗣️ Navigasi Suara</p>
                 </div>
-                <div class="feature-card" tabindex="0" data-condition="tunarungu">
+                <div class="feature-card" tabindex="0">
                     <span class="feature-icon">👂🤟</span>
-                    <h2>Nilai Tunarungu & Tunawicara</h2>
+                    <h2>Tunarungu & Tunawicara</h2>
+                    <p>🤟 Bahasa Isyarat (SIBI) &nbsp;|&nbsp; 📝 Teks Takarir &nbsp;|&nbsp; 🎨 Ikon Warna</p>
                 </div>
-                <div class="feature-card" tabindex="0" data-condition="tunagrahita">
+                <div class="feature-card" tabindex="0">
                     <span class="feature-icon">🧠🌈</span>
-                    <h2>Nilai Tunagrahita</h2>
+                    <h2>Untuk Tunagrahita</h2>
+                    <p>🖼️ Gambar Besar &nbsp;|&nbsp; 🔁 Belajar Berulang &nbsp;|&nbsp; 📖 Cerita Singkat</p>
                 </div>
             </div>
+            <!-- <div class="sdg-info">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/8c/Sustainable_Development_Goal_4.png/120px-Sustainable_Development_Goal_4.png"
+                    alt="SDG 4">
+                <div>
+                    <h3>🌍 Mendukung Sustainable Development Goals 4</h3>
+                    <p>Pendidikan Inklusif, Merata, dan Berkualitas untuk Semua Anak Indonesia</p>
+                </div>
+            </div> -->
+        </section>
 
-            <section id="nilai-tabs" class="nilai-tabs" style="display:none;">
-                <div class="nilai-tabs-container">
-                    <div class="nilai-tab-header">
-                        <button class="nilai-tab-btn active" data-tab="tunanetra">Tunanetra</button>
-                        <button class="nilai-tab-btn" data-tab="tunarungu">Tunarungu</button>
-                        <button class="nilai-tab-btn" data-tab="tunagrahita">Tunagrahita</button>
-                        <button id="close-nilai-tabs" class="close-nilai-tabs" aria-label="Tutup">✕</button>
+        <!-- Halaman Belajar -->
+        <section id="learn-page" class="page">
+            <h1 style="color: var(--primary); text-align: center;">📖 Pilih Materi Belajar Favoritmu</h1>
+            <div class="level-selector">
+                <button class="level-btn active" data-level="early">🎈 Usia 3-6 Tahun (Early Years)</button>
+                <button class="level-btn" data-level="primary">🌟 Usia 7-11 Tahun (Primary)</button>
+            </div>
+            <div id="early-level" class="level-content active">
+                <div class="subject-grid">
+                    <div class="subject-card" data-subject="communication">
+                        <div class="subject-icon">🗣️📖</div>
+                        <h3>Komunikasi & Literasi</h3>
+                        <p>Belajar huruf & kata asyik</p><button class="play-btn">Mulai Belajar</button>
                     </div>
-                    <div class="nilai-tab-content active" id="tab-tunanetra">
-                        <h2>Nilai Tunanetra</h2>
-                        <p>Data nilai Tunanetra akan ditampilkan di sini.</p>
+                    <div class="subject-card" data-subject="world">
+                        <div class="subject-icon">🌍🐘</div>
+                        <h3>Memahami Dunia</h3>
+                        <p>Hewan, alam, lingkungan</p><button class="play-btn">Mulai Belajar</button>
                     </div>
-                    <div class="nilai-tab-content" id="tab-tunarungu">
-                        <h2>Nilai Tunarungu & Tunawicara</h2>
-                        <p>Data nilai Tunarungu & Tunawicara akan ditampilkan di sini.</p>
-                    </div>
-                    <div class="nilai-tab-content" id="tab-tunagrahita">
-                        <h2>Nilai Tunagrahita</h2>
-                        <p>Data nilai Tunagrahita akan ditampilkan di sini.</p>
+                    <div class="subject-card" data-subject="creative">
+                        <div class="subject-icon">🎨🎵</div>
+                        <h3>Ekspresi Kreatif</h3>
+                        <p>Mewarnai & menyanyi</p><button class="play-btn">Mulai Belajar</button>
                     </div>
                 </div>
-            </section>
+            </div>
+            <div id="primary-level" class="level-content">
+                <div class="subject-grid">
+                    <div class="subject-card" data-subject="global">
+                        <div class="subject-icon">🌏🤝</div>
+                        <h3>Global Perspectives</h3>
+                        <p>Keberagaman & kerja sama</p><button class="play-btn">Mulai Belajar</button>
+                    </div>
+                    <div class="subject-card" data-subject="wellbeing">
+                        <div class="subject-icon">😊🧘</div>
+                        <h3>Wellbeing</h3>
+                        <p>Sehat & bahagia</p><button class="play-btn">Mulai Belajar</button>
+                    </div>
+                    <div class="subject-card" data-subject="math">
+                        <div class="subject-icon">🔢🧮</div>
+                        <h3>Mathematics</h3>
+                        <p>Berhitung seru</p><button class="play-btn">Mulai Belajar</button>
+                    </div>
+                </div>
+            </div>
+            <div id="learning-area" class="learning-area" style="display: none;">
+                <button id="close-learning">✖ Tutup</button>
+                <div id="lesson-card" class="lesson-card"></div>
+                <div id="sign-video-area" class="sign-video-area" style="display: none;"><video id="sign-video" controls
+                        style="width:100%">
+                        <source src="" type="video/mp4">
+                    </video>
+                    <p>🤟 Video Bahasa Isyarat Indonesia (SIBI)</p>
+                </div>
+                <div id="caption-area" class="caption-area" style="display: none;">
+                    <p id="caption-text"></p>
+                </div>
+            </div>
         </section>
 
         <!-- Halaman Profil -->
         <section id="profile-page" class="page">
-            <h1>👤 Profil Admin</h1>
+            <h1>👤 Profil Belajarku</h1>
             <div class="profile-form">
                 <label>Nama:</label>
-                <input type="text" id="user-name" readonly>
-                <label>NISN:</label>
-                <input type="text" id="nisn" readonly>
+                <input type="text" id="user-name" disabled>
+                <label>Usia:</label>
+                <select id="user-age" disabled>
+                    <option>3</option>
+                    <option>4</option>
+                    <option>5</option>
+                    <option>6</option>
+                    <option>7</option>
+                    <option>8</option>
+                    <option>9</option>
+                    <option>10</option>
+                    <option>11</option>
+                </select>
+                <label>Kondisi:</label>
+                <select id="user-disability" disabled>
+                    <option value="visual">Tunanetra</option>
+                    <option value="hearing">Tunarungu / Tunawicara</option>
+                    <option value="intellectual">Tunagrahita</option>
+                    <option value="other">Lainnya</option>
+                    <option value="none">Tidak Ada</option>
+                </select>
+                <button id="save-profile" class="save-btn">💾 Simpan Profil</button>
             </div>
         </section>
 
+        <!-- Halaman Bantuan -->
+        <section id="help-page" class="page">
+            <h1>❓ Panduan Seru INKLUSI App</h1>
+            <div class="help-content">
+                <div class="help-section">
+                    <h2>🎯 Untuk Tunanetra</h2>
+                    <p>Gunakan tombol 🔊 Baca Audio, aplikasi akan membacakan materi. Fitur 📳 getar akan aktif saat
+                        memilih menu.</p>
+                </div>
+                <div class="help-section">
+                    <h2>🤟 Untuk Tunarungu & Tunawicara</h2>
+                    <p>Klik "🤟 Bahasa Isyarat" untuk video SIBI. Klik "📝 Teks Takarir" untuk teks dari semua audio.
+                    </p>
+                </div>
+                <div class="help-section">
+                    <h2>🧸 Untuk Tunagrahita</h2>
+                    <p>Materi disajikan dengan gambar besar berwarna, teks pendek, dan tombol ulang agar mudah diingat.
+                    </p>
+                </div>
+                <div class="help-section">
+                    <h2>📞 Butuh Bantuan?</h2><button id="contact-btn"
+                        onclick="alert('Hubungi: 0812-3456-7890 atau email: inklusi@app.com')">Hubungi
+                        Guru/Ortu</button>
+                </div>
+            </div>
+        </section>
     </main>
     <footer>© 2026 INKLUSI App - Inovasi Media Pembelajaran Digital Multisensori | Kurikulum Merdeka x Cambridge | SDG 4
     </footer>
 
     <script>
+        // ==================== DATA PEMBELAJARAN WARNA CERAH ====================
+        const lessonData = {
+            communication: { title: "🗣️ Komunikasi & Literasi", content: "Belajar huruf A sampai Z! A seperti Apel 🍎, B seperti Bola ⚽, C seperti Cokelat 🍫. Coba sebutkan huruf yang kamu suka!", audioText: "Belajar huruf A sampai Z. A seperti Apel, B seperti Bola, C seperti Cokelat. Coba sebutkan huruf favoritmu!", caption: "[Komunikasi] A=Apel 🍎, B=Bola ⚽, C=Cokelat 🍫", images: "🔤🍎⚽🍫📖" },
+            world: { title: "🌍 Memahami Dunia", content: "Hewan-hewan lucu: Kucing (meong 🐱), Anjing (guk guk 🐶), Ayam (kukuruyuk 🐔), Sapi (moooh 🐮). Suara mana yang paling kamu suka?", audioText: "Hewan-hewan lucu: Kucing meong, Anjing guk guk, Ayam kukuruyuk, Sapi moooh. Ayo tirukan suaranya!", caption: "[Dunia Hewan] 🐱 Kucing | 🐶 Anjing | 🐔 Ayam | 🐮 Sapi", images: "🐱🐶🐔🐮🦋" },
+            creative: { title: "🎨 Ekspresi Kreatif", content: "Ayo bernyanyi 'Balonku ada lima' 🎵 Balonku ada lima, rupa-rupa warnanya: hijau, kuning, kelabu, merah muda, dan biru. Seru ya!", audioText: "Ayo bernyanyi Balonku ada lima. Balonku ada lima, rupa-rupa warnanya: hijau, kuning, kelabu, merah muda, dan biru.", caption: "[Kreatif] Lagu Balonku: hijau, kuning, kelabu, merah muda, biru 🎈", images: "🎈🎨🎵🖌️✨" },
+            global: { title: "🌏 Global Perspectives", content: "Kita semua berbeda tapi istimewa! Ada yang rambut keriting, lurus, kulit putih, cokelat. Semua berhak bahagia dan belajar bersama.", audioText: "Kita semua berbeda tapi istimewa! Semua anak hebat dan berhak mendapatkan pendidikan yang sama.", caption: "[Global] Kita berbeda → Kita istimewa → Kita bersaudara 🤝", images: "🌍🤝🌈❤️⭐" },
+            wellbeing: { title: "😊 Wellbeing", content: "Cara menjaga tubuh sehat: 1️⃣ Cuci tangan pakai sabun 🧼, 2️⃣ Sikat gigi dua kali sehari 🪥, 3️⃣ Makan sayur dan buah 🥦🍎, 4️⃣ Tidur nyenyak 😴.", audioText: "Cara menjaga tubuh sehat: Cuci tangan, sikat gigi, makan sayur buah, dan tidur cukup. Sehat itu penting!", caption: "[Wellbeing] 🧼 Cuci Tangan | 🪥 Sikat Gigi | 🥗 Sayur Buah | 😴 Tidur", images: "🧼🪥🥗😴💪" },
+            math: { title: "🔢 Mathematics", content: "Mari berhitung 1 sampai 10: 1 satu, 2 dua, 3 tiga, 4 empat, 5 lima, 6 enam, 7 tujuh, 8 delapan, 9 sembilan, 10 sepuluh. Hebat!", audioText: "Mari berhitung satu sampai sepuluh. Satu, dua, tiga, empat, lima, enam, tujuh, delapan, sembilan, sepuluh. Kamu pasti bisa!", caption: "[Matematika] 1️⃣2️⃣3️⃣4️⃣5️⃣6️⃣7️⃣8️⃣9️⃣🔟", images: "1️⃣2️⃣3️⃣4️⃣5️⃣6️⃣7️⃣8️⃣9️⃣🔟" }
+        };
 
         let currentFont = 18;
         let currentLesson = null;
@@ -1070,6 +1066,39 @@
             }[normalized] || 'other';
         }
 
+        // Fungsi Text-to-Speech
+        function speak(text) { if (window.speechSynthesis) { window.speechSynthesis.cancel(); let u = new SpeechSynthesisUtterance(text); u.lang = 'id-ID'; u.rate = 0.85; window.speechSynthesis.speak(u); } }
+        function vibrate(p) { if ('vibrate' in navigator && userDisability === 'visual') navigator.vibrate(p); }
+
+        function filterAgeLevels(age) {
+            const earlyBtn = document.querySelector('.level-btn[data-level="early"]');
+            const primaryBtn = document.querySelector('.level-btn[data-level="primary"]');
+            const earlyContent = document.getElementById('early-level');
+            const primaryContent = document.getElementById('primary-level');
+            if (!earlyBtn || !primaryBtn || !earlyContent || !primaryContent) return;
+            if (age >= 3 && age <= 6) {
+                earlyBtn.style.display = 'inline-flex';
+                primaryBtn.style.display = 'none';
+                earlyBtn.classList.add('active');
+                primaryBtn.classList.remove('active');
+                earlyContent.classList.add('active');
+                primaryContent.classList.remove('active');
+            } else if (age >= 7 && age <= 11) {
+                earlyBtn.style.display = 'none';
+                primaryBtn.style.display = 'inline-flex';
+                earlyBtn.classList.remove('active');
+                primaryBtn.classList.add('active');
+                earlyContent.classList.remove('active');
+                primaryContent.classList.add('active');
+            } else {
+                earlyBtn.style.display = 'inline-flex';
+                primaryBtn.style.display = 'inline-flex';
+            }
+        }
+
+        // Update progress
+        function updateProgress() { let p = (completedLessons.length / 6) * 100; let bar = document.getElementById('progress-bar'); let txt = document.getElementById('progress-text'); if (bar) { bar.style.width = p + '%'; bar.innerText = Math.round(p) + '%'; } if (txt) txt.innerText = `✅ Sudah menyelesaikan ${completedLessons.length} dari 6 materi (${Math.round(p)}%)`; }
+        function saveProgress(subject) { if (!completedLessons.includes(subject)) { completedLessons.push(subject); localStorage.setItem("progress", JSON.stringify(completedLessons)); updateProgress(); } }
 
         // Buka materi
         function openLesson(subject) {
@@ -1082,6 +1111,27 @@
             // Render tombol berdasarkan jenis disabilitas
             let buttonsHtml = '';
 
+            if (userDisability === 'hearing') {
+                // Tunarungu: fokus pada Bahasa Isyarat, Teks Takarir, dan visual elemen
+                buttonsHtml = `
+                    <button id="sign-lang-btn">🤟 Bahasa Isyarat (SIBI)</button>
+                    <button id="caption-btn">📝 Teks Takarir (Subtitle)</button>
+                `;
+            } else if (userDisability === 'visual') {
+                // Tunanetra: fokus pada Audio dan getaran
+                buttonsHtml = `
+                    <button id="audio-guide">🔊 Baca Audio</button>
+                    <button id="vibe-feedback">📳 Getar Feedback</button>
+                    <button id="repeat-lesson">🔄 Ulangi Materi</button>
+                `;
+            } else {
+                // Lainnya/Tidak Ada: tampilkan semua
+                buttonsHtml = `
+                    <button id="audio-guide">🔊 Baca Audio</button>
+                    <button id="caption-btn">📝 Teks Takarir</button>
+                    <button id="repeat-lesson">🔄 Ulangi Materi</button>
+                `;
+            }
 
             cardDiv.innerHTML = `
             <h2 style="color:var(--primary);">${currentLesson.title}</h2>
@@ -1119,32 +1169,6 @@
         document.querySelectorAll('.nav-menu a').forEach(link => { link.addEventListener('click', e => { e.preventDefault(); showPage(link.dataset.page); }); });
         document.querySelectorAll('.cta-button, [data-page]').forEach(btn => { if (btn.dataset?.page) btn.addEventListener('click', () => showPage(btn.dataset.page)); });
 
-        function setActiveNilaiTab(tab) {
-            document.querySelectorAll('.nilai-tab-btn').forEach(btn => btn.classList.toggle('active', btn.dataset.tab === tab));
-            document.querySelectorAll('.nilai-tab-content').forEach(content => content.classList.toggle('active', content.id === `tab-${tab}`));
-        }
-
-        function openNilaiTabs(tab) {
-            document.getElementById('nilai-tabs').style.display = 'flex';
-            setActiveNilaiTab(tab);
-            document.body.style.overflow = 'hidden';
-        }
-
-        function closeNilaiTabs() {
-            document.getElementById('nilai-tabs').style.display = 'none';
-            document.body.style.overflow = 'auto';
-        }
-
-        document.querySelectorAll('.feature-card[data-condition]').forEach(card => {
-            card.addEventListener('click', () => openNilaiTabs(card.dataset.condition));
-        });
-
-        document.querySelectorAll('.nilai-tab-btn').forEach(btn => {
-            btn.addEventListener('click', () => setActiveNilaiTab(btn.dataset.tab));
-        });
-
-        document.getElementById('close-nilai-tabs')?.addEventListener('click', closeNilaiTabs);
-
         // Event subject cards
         document.querySelectorAll('.subject-card').forEach(card => { card.addEventListener('click', () => { let sub = card.dataset.subject; if (sub) openLesson(sub); }); card.querySelector('.play-btn')?.addEventListener('click', (e) => { e.stopPropagation(); let sub = card.dataset.subject; if (sub) openLesson(sub); }); });
 
@@ -1158,6 +1182,8 @@
             alert(`Nama panggilan disimpan: ${name}`);
             updateProgress();
         });
+        // Jika userAge tersimpan, kunci kolom usia dan disabilitas di profil
+        document.getElementById('user-age')?.addEventListener('change', () => { userAge = parseInt(document.getElementById('user-age').value, 10); filterAgeLevels(userAge); });
         // Level
         document.querySelectorAll('.level-btn').forEach(btn => { btn.addEventListener('click', () => { let lvl = btn.dataset.level; document.querySelectorAll('.level-btn').forEach(b => b.classList.remove('active')); btn.classList.add('active'); document.querySelectorAll('.level-content').forEach(c => c.classList.remove('active')); document.getElementById(`${lvl}-level`).classList.add('active'); }); });
 
@@ -1177,22 +1203,22 @@
             }
         });
         let readM = false; document.getElementById('read-mode')?.addEventListener('click', () => { readM = !readM; if (readM) document.body.classList.add('read-mode'); else document.body.classList.remove('read-mode'); });
-        document.getElementById('nav-toggle')?.addEventListener('click', () => {
-            const menu = document.getElementById('nav-menu');
-            menu.classList.toggle('show');
-        });
-
-        document.querySelectorAll('.nav-menu a').forEach(link => {
-            link.addEventListener('click', () => {
-                document.getElementById('nav-menu').classList.remove('show');
-            });
-        }); document.getElementById('logout')?.addEventListener('click', () => { localStorage.removeItem('loggedIn'); window.location.replace('index.html'); });
+        document.getElementById('nav-toggle')?.addEventListener('click', () => { document.getElementById('nav-menu').classList.toggle('show'); });
+        document.getElementById('logout')?.addEventListener('click', () => { localStorage.removeItem('loggedIn'); window.location.replace('index.html'); });
 
         // Load data
-        ; (async function init() {
+        (function init() {
             let savedFont = localStorage.getItem('fontSize');
             if (savedFont) { currentFont = parseInt(savedFont); document.body.style.fontSize = currentFont + 'px'; }
             let savedPage = localStorage.getItem('currPage');
+            if (savedPage && savedPage !== 'home') showPage(savedPage);
+            const savedAge = localStorage.getItem('userAge');
+            if (savedAge) {
+                const ageNumber = parseInt(savedAge, 10);
+                const ageSelect = document.getElementById('user-age');
+                if (ageSelect) { ageSelect.value = ageNumber; ageSelect.disabled = true; }
+                filterAgeLevels(ageNumber);
+            }
             const savedDis = localStorage.getItem('userDisability');
             if (savedDis) {
                 const normalizedDis = normalizeDisability(savedDis);
@@ -1201,43 +1227,8 @@
                 const disEl = document.getElementById('user-disability');
                 if (disEl) { disEl.value = normalizedDis; disEl.disabled = true; }
             }
-            const isAdmin = localStorage.getItem('isAdmin') === 'true';
-            const savedNisn = localStorage.getItem('userNISN');
             const savedName = localStorage.getItem('userName');
-            const nameEl = document.getElementById('user-name');
-            const idEl = document.getElementById('nisn');
-            if (nameEl && savedName) {
-                nameEl.value = savedName;
-            }
-            if (idEl && savedNisn) {
-                idEl.value = savedNisn;
-            }
-            if (isAdmin && savedNisn) {
-                // Ambil profil admin dari datasiswa.json (level Admin). Jika gagal, fallback ke localStorage.
-                try {
-                    const response = await fetch('data.json');
-                    if (response.ok) {
-                        const users = await response.json();
-                        const admin = users.find(a => String(a.nisn) === String(savedNisn) && String(a.level).toLowerCase() === 'admin');
-                        if (admin) {
-                            if (nameEl) nameEl.value = admin.nama || savedName || '';
-                            if (idEl) idEl.value = String(admin.nisn) || savedNisn;
-                            localStorage.setItem('userName', admin.nama || savedName || '');
-                            localStorage.setItem('userNISN', String(admin.nisn));
-                        } else {
-                            if (nameEl) nameEl.value = savedName || '';
-                            if (idEl) idEl.value = savedNisn || '';
-                        }
-                    } else {
-                        if (nameEl) nameEl.value = savedName || '';
-                        if (idEl) idEl.value = savedNisn || '';
-                    }
-                } catch (err) {
-                    console.error('Gagal memuat profil admin:', err);
-                    if (nameEl) nameEl.value = savedName || '';
-                    if (idEl) idEl.value = savedNisn || '';
-                }
-            }
+            if (savedName) document.getElementById('user-name').value = savedName;
             updateProgress();
         })();
     </script>
