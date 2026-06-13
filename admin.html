@@ -1208,30 +1208,12 @@
                 const disEl = document.getElementById('user-disability');
                 if (disEl) { disEl.value = normalizedDis; disEl.disabled = true; }
             }
-            const isAdmin = localStorage.getItem('isAdmin') === 'true';
             const savedNisn = localStorage.getItem('userNISN');
             const savedName = localStorage.getItem('userName');
             const nameEl = document.getElementById('user-name');
             const idEl = document.getElementById('nisn');
             if (nameEl) nameEl.value = savedName || '';
             if (idEl) idEl.value = savedNisn || '';
-            if (isAdmin && savedNisn) {
-                try {
-                    const response = await fetch('data.json');
-                    if (response.ok) {
-                        const users = await response.json();
-                        const admin = users.find(a => String(a.nisn) === String(savedNisn) && String(a.level).toLowerCase() === 'admin');
-                        if (admin) {
-                            if (nameEl) nameEl.value = admin.nama || savedName || '';
-                            if (idEl) idEl.value = String(admin.nisn) || savedNisn;
-                            localStorage.setItem('userName', admin.nama || savedName || '');
-                            localStorage.setItem('userNISN', String(admin.nisn));
-                        }
-                    }
-                } catch (err) {
-                    console.error('Gagal memuat profil admin:', err);
-                }
-            }
             if (typeof updateProgress === 'function') updateProgress();
         }
 
