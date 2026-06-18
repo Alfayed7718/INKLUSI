@@ -2,7 +2,7 @@
 <html lang="id">
 
 <head>
-    <link rel="manifest" href="manifest.json">
+    <link rel="manifest" href="manifesto.json">
     <meta name="theme-color" content="#6C63FF">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
@@ -503,6 +503,8 @@
             padding: 35px;
             box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
             animation: slideUp 0.3s ease;
+            position: relative;
+            overflow: hidden;
         }
 
         @keyframes slideUp {
@@ -570,10 +572,86 @@
             font-weight: bold;
         }
 
-        .sign-video-area,
-        .caption-area {
-            max-width: 900px;
-            margin: 20px auto;
+        .sign-video-area {
+            display: none;
+            position: absolute;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.95);
+            z-index: 1100;
+            padding: 30px;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 18px;
+        }
+
+        .sign-video-area video {
+            width: 100%;
+            max-width: 840px;
+            max-height: calc(100vh - 220px);
+            border-radius: 20px;
+            background: #000;
+            box-shadow: 0 18px 40px rgba(0, 0, 0, 0.35);
+        }
+
+        .sign-video-area p {
+            margin: 0;
+            color: #FFFFFF;
+            font-size: 1.05rem;
+            text-align: center;
+        }
+
+        .close-video-btn {
+            position: absolute;
+            top: 18px;
+            right: 18px;
+            background: rgba(255, 255, 255, 0.14);
+            color: #FFFFFF;
+            border: 1px solid rgba(255, 255, 255, 0.35);
+            border-radius: 999px;
+            width: 44px;
+            height: 44px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .accessibility-controls button.video-support-btn {
+            background: linear-gradient(135deg, #FF9F1C, #FF6584);
+        }
+
+        .accessibility-controls button.video-support-btn:hover,
+        .accessibility-controls button.video-support-btn:focus-visible {
+            outline: 3px solid #fff;
+            box-shadow: 0 0 0 4px rgba(255, 101, 132, 0.35);
+            transform: translateY(-1px);
+        }
+
+        .accessibility-controls button:focus-visible {
+            outline: 3px solid rgba(255, 255, 255, 0.85);
+            outline-offset: 3px;
+        }
+
+        .accessibility-controls button.video-support-btn .video-icon {
+            margin-right: 8px;
+            display: inline-flex;
+            align-items: center;
+        }
+
+        .video-caption-box {
+            background: rgba(255, 255, 255, 0.16);
+            color: #FFFFFF;
+            padding: 12px 16px;
+            border-radius: 16px;
+            max-width: 860px;
+            width: 100%;
+            font-size: 1rem;
+            text-align: center;
+            box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.18);
         }
 
         .caption-area {
@@ -967,12 +1045,6 @@
             <div id="learning-area" class="learning-area" style="display: none;">
                 <button id="close-learning">✖ Tutup</button>
                 <div id="lesson-card" class="lesson-card"></div>
-                <div id="sign-video-area" class="sign-video-area" style="display: none;"><video id="sign-video" controls
-                        style="width:100%">
-                        <source src="" type="video/mp4">
-                    </video>
-                    <p>🤟 Video Bahasa Isyarat Indonesia (SIBI)</p>
-                </div>
                 <div id="caption-area" class="caption-area" style="display: none;">
                     <p id="caption-text"></p>
                 </div>
@@ -1000,7 +1072,8 @@
                 <label>Kondisi:</label>
                 <select id="user-disability" disabled>
                     <option value="visual">Tunanetra</option>
-                    <option value="hearing">Tunarungu / Tunawicara</option>
+                    <option value="hearing">Tunarungu</option>
+                    <option value="speaking">Tunawicara</option>
                     <option value="intellectual">Tunagrahita</option>
                     <option value="other">Lainnya</option>
                     <option value="none">Tidak Ada</option>
@@ -1039,14 +1112,226 @@
     </footer>
 
     <script>
-        // ==================== DATA PEMBELAJARAN WARNA CERAH ====================
+        // ==================== DATA PEMBELAJARAN BERDASARKAN USIA & KONDISI ====================
+        // Struktur: {subject: {title, byAgeAndCondition: {early_visual, early_hearing, early_speaking, early_intellectual, primary_visual, ...}}}
+        // Gunakan kombinasi userAge (early/primary) + userDisability (visual/hearing/speaking/intellectual)
         const lessonData = {
-            communication: { title: "🗣️ Komunikasi & Literasi", content: "Belajar huruf A sampai Z! A seperti Apel 🍎, B seperti Bola ⚽, C seperti Cokelat 🍫. Coba sebutkan huruf yang kamu suka!", audioText: "Belajar huruf A sampai Z. A seperti Apel, B seperti Bola, C seperti Cokelat. Coba sebutkan huruf favoritmu!", caption: "[Komunikasi] A=Apel 🍎, B=Bola ⚽, C=Cokelat 🍫", images: "🔤🍎⚽🍫📖" },
-            world: { title: "🌍 Memahami Dunia", content: "Hewan-hewan lucu: Kucing (meong 🐱), Anjing (guk guk 🐶), Ayam (kukuruyuk 🐔), Sapi (moooh 🐮). Suara mana yang paling kamu suka?", audioText: "Hewan-hewan lucu: Kucing meong, Anjing guk guk, Ayam kukuruyuk, Sapi moooh. Ayo tirukan suaranya!", caption: "[Dunia Hewan] 🐱 Kucing | 🐶 Anjing | 🐔 Ayam | 🐮 Sapi", images: "🐱🐶🐔🐮🦋" },
-            creative: { title: "🎨 Ekspresi Kreatif", content: "Ayo bernyanyi 'Balonku ada lima' 🎵 Balonku ada lima, rupa-rupa warnanya: hijau, kuning, kelabu, merah muda, dan biru. Seru ya!", audioText: "Ayo bernyanyi Balonku ada lima. Balonku ada lima, rupa-rupa warnanya: hijau, kuning, kelabu, merah muda, dan biru.", caption: "[Kreatif] Lagu Balonku: hijau, kuning, kelabu, merah muda, biru 🎈", images: "🎈🎨🎵🖌️✨" },
-            global: { title: "🌏 Global Perspectives", content: "Kita semua berbeda tapi istimewa! Ada yang rambut keriting, lurus, kulit putih, cokelat. Semua berhak bahagia dan belajar bersama.", audioText: "Kita semua berbeda tapi istimewa! Semua anak hebat dan berhak mendapatkan pendidikan yang sama.", caption: "[Global] Kita berbeda → Kita istimewa → Kita bersaudara 🤝", images: "🌍🤝🌈❤️⭐" },
-            wellbeing: { title: "😊 Wellbeing", content: "Cara menjaga tubuh sehat: 1️⃣ Cuci tangan pakai sabun 🧼, 2️⃣ Sikat gigi dua kali sehari 🪥, 3️⃣ Makan sayur dan buah 🥦🍎, 4️⃣ Tidur nyenyak 😴.", audioText: "Cara menjaga tubuh sehat: Cuci tangan, sikat gigi, makan sayur buah, dan tidur cukup. Sehat itu penting!", caption: "[Wellbeing] 🧼 Cuci Tangan | 🪥 Sikat Gigi | 🥗 Sayur Buah | 😴 Tidur", images: "🧼🪥🥗😴💪" },
-            math: { title: "🔢 Mathematics", content: "Mari berhitung 1 sampai 10: 1 satu, 2 dua, 3 tiga, 4 empat, 5 lima, 6 enam, 7 tujuh, 8 delapan, 9 sembilan, 10 sepuluh. Hebat!", audioText: "Mari berhitung satu sampai sepuluh. Satu, dua, tiga, empat, lima, enam, tujuh, delapan, sembilan, sepuluh. Kamu pasti bisa!", caption: "[Matematika] 1️⃣2️⃣3️⃣4️⃣5️⃣6️⃣7️⃣8️⃣9️⃣🔟", images: "1️⃣2️⃣3️⃣4️⃣5️⃣6️⃣7️⃣8️⃣9️⃣🔟" }
+            communication: {
+                title: "🗣️ Komunikasi & Literasi",
+                byAgeAndCondition: {
+                    // === Usia 3-6 Tahun ===
+                    early_visual: {
+                        content: "Dengarkan huruf A-E dengan suara yang jelas.",
+                        audioText: "Halo sahabat! Ayo belajar huruf. A Apel, B Bola, C Cokelat, D Durian, E Emas. Mudah bukan!",
+                        caption: "[Komunikasi] Dengarkan huruf A, B, C.",
+                        images: "",
+                        videoSrc: "video/support.mp4"
+                    },
+                    early_hearing: {
+                        content: "Lihat video isyarat huruf A sampai E.",
+                        audioText: "",
+                        caption: "A=Apel | B=Bola | C=Cokelat | D=Durian | E=Emas.",
+                        images: "🤟🍎⚽🍫🧈",
+                        videoSrc: "video/sign_communication_early.mp4"
+                    },
+                    early_speaking: {
+                        content: "[Tunawicara 3-6] Video isyarat + teks: A Apel, B Bola, C Cokelat. Baca dan lihat gerakan.",
+                        audioText: "",
+                        caption: "👉 A=Apel 🍎 | B=Bola ⚽ | C=Cokelat 🍫 | Niru gerakan isyarat!",
+                        images: "🤟📝🍎",
+                        videoSrc: "video/sign_communication_early.mp4"
+                    },
+                    early_intellectual: {
+                        content: "[Tunagrahita 3-6] Gambar besar + nama singkat. 🍎 APEL. ⚽ BOLA. 🍫 COKELAT.",
+                        audioText: "A... Apel. B... Bola. C... Cokelat. Ulangi bersama!",
+                        caption: "🍎 = APEL | ⚽ = BOLA | 🍫 = COKELAT",
+                        images: "🍎⚽🍫🧸",
+                        videoSrc: "video/support.mp4"
+                    },
+                    // === Usia 7-11 Tahun ===
+                    primary_visual: {
+                        content: "[Tunanetra 7-11] Pelajari huruf A sampai Z dengan contoh kalimat. A—Aku, B—Buku, C—Cinta.",
+                        audioText: "Belajar alfabet lengkap dari A sampai Z. Setiap huruf lebih detail dengan arti.",
+                        caption: "[Komunikasi] Alfabet A-Z dengan contoh kata.",
+                        images: "🔤📚",
+                        videoSrc: "video/support.mp4"
+                    },
+                    primary_hearing: {
+                        content: "[Tunarungu 7-11] Video isyarat lengkap A-Z. Teks takarir menampilkan setiap huruf dan contoh kata.",
+                        audioText: "",
+                        caption: "A=Aku | B=Buku | C=Cinta | D=Dunia | E=Energi | F=Fantasi | ... Z=Zebra",
+                        images: "🤟📖✨",
+                        videoSrc: "video/sign_communication_primary.mp4"
+                    },
+                    primary_speaking: {
+                        content: "[Tunawicara 7-11] Video isyarat A-Z + teks lengkap. Setiap huruf dengan contoh kalimat pendek.",
+                        audioText: "",
+                        caption: "A—Aku belajar. B—Buku warna-warni. C—Cinta teman. Lihat isyarat!",
+                        images: "🤟📚✍️",
+                        videoSrc: "video/sign_communication_primary.mp4"
+                    },
+                    primary_intellectual: {
+                        content: "[Tunagrahita 7-11] Huruf dengan gambar dan kalimat sangat pendek. Ulangi berkali-kali.",
+                        audioText: "A—Aku. B—Buku. C—Cinta. Mudah diingat!",
+                        caption: "A=Aku | B=Buku | C=Cinta",
+                        images: "🔤📚❤️",
+                        videoSrc: "video/support.mp4"
+                    }
+                }
+            },
+            world: {
+                title: "🌍 Memahami Dunia",
+                byAgeAndCondition: {
+                    // === Usia 3-6 Tahun ===
+                    early_visual: {
+                        content: "[Tunanetra 3-6] Dengarkan suara hewan lucu. Kucing bersuara meong, Anjing bersuara guk guk.",
+                        audioText: "Ayo dengarkan! Kucing: meong meong. Anjing: guk guk. Ayam: kukuruyuk. Sapi: moooh.",
+                        caption: "[Dunia Hewan] Dengarkan suara tiap hewan.",
+                        images: "🐱🐶",
+                        videoSrc: "video/support.mp4"
+                    },
+                    early_hearing: {
+                        content: "[Tunarungu 3-6] Video isyarat nama hewan + gambar besar. Kucing, Anjing, Ayam, Sapi.",
+                        audioText: "",
+                        caption: "🐱 KUCING | 🐶 ANJING | 🐔 AYAM | 🐮 SAPI",
+                        images: "🐱🐶🐔🐮",
+                        videoSrc: "video/sign_world_early.mp4"
+                    },
+                    early_speaking: {
+                        content: "[Tunawicara 3-6] Video isyarat hewan + teks + gambar. Niru gerakan isyarat tiap hewan!",
+                        audioText: "",
+                        caption: "Lihat gerakan: KUCING, ANJING, AYAM, SAPI. Niru gerakannya!",
+                        images: "🤟🐱🐶🐔",
+                        videoSrc: "video/sign_world_early.mp4"
+                    },
+                    early_intellectual: {
+                        content: "[Tunagrahita 3-6] Gambar hewan BESAR + nama 1 kata. Repeat 3-4 kali untuk diingat.",
+                        audioText: "Kucing. Anjing. Ayam. Sapi. Bagus! Ulangi lagi!",
+                        caption: "🐱 = KUCING | 🐶 = ANJING | 🐔 = AYAM | 🐮 = SAPI",
+                        images: "🐱🐶🐔🐮",
+                        videoSrc: "video/support.mp4"
+                    },
+                    // === Usia 7-11 Tahun ===
+                    primary_visual: {
+                        content: "[Tunanetra 7-11] Pelajari habitat, cara hidup, dan suara detail 6-8 macam hewan.",
+                        audioText: "Kucing hidup di rumah, suaranya meong. Anjing penjaga rumah, suaranya guk guk. Sapi hewan ternak...",
+                        caption: "[Dunia Hewan] Habitat dan ciri tiap hewan.",
+                        images: "🌍🐾",
+                        videoSrc: "video/support.mp4"
+                    },
+                    primary_hearing: {
+                        content: "[Tunarungu 7-11] Video isyarat detail tiap hewan + habitat + ciri khusus. Teks takarir lengkap.",
+                        audioText: "",
+                        caption: "Kucing: hewan peliharaan. Sapi: hewan ternak. Anjing: hewan penjaga rumah. Burung: terbang di langit.",
+                        images: "🐱🐄🐕🦅",
+                        videoSrc: "video/sign_world_primary.mp4"
+                    },
+                    primary_speaking: {
+                        content: "[Tunawicara 7-11] Video isyarat hewan lengkap + teks deskripsi. Baca ciri dan tempat hidup.",
+                        audioText: "",
+                        caption: "Kucing: pemalu, suka bermain. Sapi: hewan besar, pemberi susu. Anjing: setia, penjaga rumah.",
+                        images: "🐱🐄🐕👨‍🌾",
+                        videoSrc: "video/sign_world_primary.mp4"
+                    },
+                    primary_intellectual: {
+                        content: "[Tunagrahita 7-11] Hewan dengan deskripsi SANGAT pendek (3-4 kata). Gambar besar dan warna-warni.",
+                        audioText: "Kucing: hewan peliharaan. Sapi: hewan ternak. Anjing: penjaga rumah. Baik!",
+                        caption: "🐱 = hewan peliharaan | 🐄 = hewan ternak | 🐕 = penjaga rumah",
+                        images: "🐱🐄🐕",
+                        videoSrc: "video/support.mp4"
+                    }
+                }
+            },
+            creative: {
+                title: "🎨 Ekspresi Kreatif",
+                byAgeAndCondition: {
+                    // === Usia 3-6 Tahun ===
+                    early_visual: {
+                        content: "[Tunanetra 3-6] Dengarkan lagu 'Balonku Ada Lima' dengan nada ceria. Suara jelas dan pelan.",
+                        audioText: "Ayo dengarkan lagu! Balonku ada lima, rupa-rupa warnanya... (musik ceria)",
+                        caption: "[Kreatif] Lagu Balonku Ada Lima.",
+                        images: "🎵🎈",
+                        videoSrc: "video/audio_song_early.mp3"
+                    },
+                    early_hearing: {
+                        content: "[Tunarungu 3-6] Video tarian isyarat + gambar besar. Balonku ada lima, warna-warna cerah!",
+                        audioText: "",
+                        caption: "Balonku ada lima. Warna: hijau, kuning, kelabu, merah muda, biru. Lihat isyarat!",
+                        images: "🎈🟢🟡⚫🟣🔵",
+                        videoSrc: "video/sign_creative_early.mp4"
+                    },
+                    early_speaking: {
+                        content: "[Tunawicara 3-6] Video isyarat tarian + teks. Belajar warna sambil menari dengan gerakan!",
+                        audioText: "",
+                        caption: "🎈 Hijau 🎈 Kuning 🎈 Kelabu 🎈 Merah Muda 🎈 Biru — Siapa bisa menirunya?",
+                        images: "🎈💃🕺",
+                        videoSrc: "video/sign_creative_early.mp4"
+                    },
+                    early_intellectual: {
+                        content: "[Tunagrahita 3-6] Lagu SANGAT pendek + gerakan tangan besar. Ulangi bersama 5-6 kali.",
+                        audioText: "Ba-lon-ku... ba-lon-ku... (suara lambat)",
+                        caption: "Balonku ada lima. Ulangi: Ba-lon-ku!",
+                        images: "🎈🎈🎈🎈🎈",
+                        videoSrc: "video/audio_song_early.mp3"
+                    },
+                    // === Usia 7-11 Tahun ===
+                    primary_visual: {
+                        content: "[Tunanetra 7-11] Pelajari lagu nasional atau daerah dengan lirik detail. Belajar musik tradisional.",
+                        audioText: "Mari belajar lagu 'Indonesia Raya' atau lagu daerah. Dengarkan lirik dan nada dengan perhatian penuh.",
+                        caption: "[Kreatif] Lagu nasional dan daerah.",
+                        images: "🎵🇮🇩",
+                        videoSrc: "video/audio_traditional.mp3"
+                    },
+                    primary_hearing: {
+                        content: "[Tunarungu 7-11] Video isyarat lagu + teks lengkap. Pelajari arti tiap lirik lagu nasional.",
+                        audioText: "",
+                        caption: "Indonesia Raya... Tanah airku... Negeri yang kaya...  Lihat isyarat + baca arti!",
+                        images: "🇮🇩🎵📝",
+                        videoSrc: "video/sign_creative_primary.mp4"
+                    },
+                    primary_speaking: {
+                        content: "[Tunawicara 7-11] Video isyarat + lirik lagu. Mengerti pesan lagu sambil belajar isyarat.",
+                        audioText: "",
+                        caption: "Lagu Nasional: Indonesia Raya. Lihat gerakan isyarat dan pahami makna setiap kata!",
+                        images: "🎵🇮🇩📖",
+                        videoSrc: "video/sign_creative_primary.mp4"
+                    },
+                    primary_intellectual: {
+                        content: "[Tunagrahita 7-11] Lagu sederhana + gerakan mudah. Ulangi berkali-kali untuk membentuk ingatan.",
+                        audioText: "Indonesia Raya... (diulang pelan). Hebat! Ulangi lagi!",
+                        caption: "Lagu: Indonesia Raya. Gerakan: tangan naik-turun. Ulangi!",
+                        images: "🇮🇩👋",
+                        videoSrc: "video/audio_traditional.mp3"
+                    }
+                }
+            },
+            global: {
+                title: "🌏 Global Perspectives",
+                byAgeAndCondition: {
+                    primary_visual: { content: "[Tunanetra 7-11] Pelajari keberagaman budaya dunia melalui cerita radio.", audioText: "Di dunia ada banyak negara dengan budaya berbeda. Mari pelajari bersama...", caption: "[Global] Keberagaman di dunia.", images: "🌍🤝", videoSrc: "video/support.mp4" },
+                    primary_hearing: { content: "[Tunarungu 7-11] Video keberagaman + teks. Orang berbeda tapi istimewa!", audioText: "", caption: "Orang di dunia berbeda-beda. Berbeda itu istimewa!", images: "🌍🌈👨‍👩‍👧‍👦", videoSrc: "video/diversity.mp4" },
+                    primary_speaking: { content: "[Tunawicara 7-11] Video + teks tentang keberagaman dan persatuan.", audioText: "", caption: "Semua orang berbeda. Kita tetap satu keluarga besar!", images: "🤝🌍❤️", videoSrc: "video/diversity.mp4" },
+                    primary_intellectual: { content: "[Tunagrahita 7-11] Gambar orang berbeda warna kulit + teks: Semua teman!", audioText: "Teman kita berbeda warna. Tapi semua teman!", caption: "Kulit berbeda—tetap teman!", images: "👨🏻👨🏽👨🏿", videoSrc: "video/support.mp4" }
+                }
+            },
+            wellbeing: {
+                title: "😊 Wellbeing",
+                byAgeAndCondition: {
+                    primary_visual: { content: "[Tunanetra 7-11] Cara hidup sehat detail: cuci tangan, sikat gigi, makan sehat, olahraga.", audioText: "Cuci tangan pakai sabun sebelum makan. Sikat gigi 2 kali sehari. Makan makanan bergizi. Tidur cukup.", caption: "[Wellbeing] Hidup sehat.", images: "🧼🪥🥗😴", videoSrc: "video/support.mp4" },
+                    primary_hearing: { content: "[Tunarungu 7-11] Video cara hidup sehat + teks langkah-langkah detail.", audioText: "", caption: "Cuci tangan | Sikat gigi | Makan sayur | Olahraga | Tidur cukup", images: "🧼🪥🥗🏃😴", videoSrc: "video/health.mp4" },
+                    primary_speaking: { content: "[Tunawicara 7-11] Video demonstrasi + teks. Cara hidup sehat untuk semua!", audioText: "", caption: "Tangan bersih—kesehatan terjaga! Tidur cukup—pikiran sehat!", images: "✅🧼😊", videoSrc: "video/health.mp4" },
+                    primary_intellectual: { content: "[Tunagrahita 7-11] Gambar besar 4 hal penting: cuci tangan, sikat gigi, makan sehat, tidur.", audioText: "Bersih—sehat. Makan—sehat. Tidur—sehat. Bagus!", caption: "Bersih = sehat | Makan = sehat | Tidur = sehat", images: "🧼🥗😴🏥", videoSrc: "video/support.mp4" }
+                }
+            },
+            math: {
+                title: "🔢 Mathematics",
+                byAgeAndCondition: {
+                    primary_visual: { content: "[Tunanetra 7-11] Belajar angka 1-20 dengan contoh benda nyata yang bisa disentuh atau suara.", audioText: "Satu, dua, tiga... sampai dua puluh. Bayangkan satu apel, dua bola...", caption: "[Matematika] Angka 1-20.", images: "🔢📚", videoSrc: "video/support.mp4" },
+                    primary_hearing: { content: "[Tunarungu 7-11] Video angka 1-20 + isyarat + gambar angka besar.", audioText: "", caption: "1 satu | 2 dua | 3 tiga | ... | 20 dua puluh", images: "1️⃣2️⃣3️⃣🔢", videoSrc: "video/numbers.mp4" },
+                    primary_speaking: { content: "[Tunawicara 7-11] Angka 1-20 + isyarat + teks. Melihat angka sambil belajar gerakan!", audioText: "", caption: "Lihat dan niru gerakan isyarat: satu, dua, tiga... dua puluh!", images: "🤟🔢📖", videoSrc: "video/numbers.mp4" },
+                    primary_intellectual: { content: "[Tunagrahita 7-11] Angka 1-10 BESAR di layar + gambar benda. 1=apel, 2=bola, dst.", audioText: "Satu apel. Dua bola. Tiga buah. Bagus! Ulangi!", caption: "1🍎 | 2⚽ | 3🟠 | 4🍌 | 5🌟", images: "1️⃣2️⃣3️⃣4️⃣5️⃣", videoSrc: "video/support.mp4" }
+                }
+            }
         };
 
         let currentFont = 18;
@@ -1060,9 +1345,11 @@
             return {
                 tunanetra: 'visual',
                 tunarungu: 'hearing',
+                tunawicara: 'speaking',
                 tunagrahita: 'intellectual',
                 visual: 'visual',
                 hearing: 'hearing',
+                speaking: 'speaking',
                 intellectual: 'intellectual'
             }[normalized] || 'other';
         }
@@ -1103,19 +1390,44 @@
 
         // Buka materi
         function openLesson(subject) {
-            currentLesson = lessonData[subject];
-            if (!currentLesson) return;
+            const rawLesson = lessonData[subject];
+            if (!rawLesson) return;
+
+            // Tentukan level usia (early/primary) berdasarkan userAge
+            let ageLevel = 'early';
+            if (userAge >= 7 && userAge <= 11) ageLevel = 'primary';
+
+            // Buat key kombinasi: early_visual, primary_hearing, dll.
+            const contentKey = `${ageLevel}_${userDisability}`;
+
+            // Pilih konten dari byAgeAndCondition. Jika tidak ada, gunakan default atau fallback.
+            let lessonContent = rawLesson.byAgeAndCondition && rawLesson.byAgeAndCondition[contentKey]
+                ? rawLesson.byAgeAndCondition[contentKey]
+                : { content: rawLesson.content || '', audioText: rawLesson.audioText || '', caption: rawLesson.caption || '', images: rawLesson.images || '', videoSrc: rawLesson.videoSrc || 'video/support.mp4' };
+
+            // Gabungkan dengan title materi
+            const lessonForUser = Object.assign({ title: rawLesson.title }, lessonContent);
+
+            currentLesson = rawLesson; // simpan referensi asli untuk progress
             let area = document.getElementById('learning-area');
             let cardDiv = document.getElementById('lesson-card');
-            let imgHtml = currentLesson.images.split('').map(ch => `<div style="font-size:3.5rem; background:#E8F0FE; padding:12px; border-radius:20px;">${ch}</div>`).join('');
+            let imgHtml = String(lessonForUser.images || '').split('').map(ch => `<div style="font-size:3.5rem; background:#E8F0FE; padding:12px; border-radius:20px;">${ch}</div>`).join('');
 
             // Render tombol berdasarkan jenis disabilitas
             let buttonsHtml = '';
 
             if (userDisability === 'hearing') {
-                // Tunarungu: fokus pada Bahasa Isyarat, Teks Takarir, dan visual elemen
+                // Tunarungu: tampilkan Baca Audio (opsional), Video Pendukung, dan Teks Takarir
                 buttonsHtml = `
-                    <button id="sign-lang-btn">🤟 Bahasa Isyarat (SIBI)</button>
+                    <button id="audio-guide">🔊 Baca Audio</button>
+                    <button id="video-btn" class="video-support-btn" aria-label="Tonton Video Pendukung" title="Tonton Video Pendukung"><span class="video-icon">🎥</span>Video Pendukung</button>
+                    <button id="caption-btn">📝 Teks Takarir (Subtitle)</button>
+                `;
+            } else if (userDisability === 'speaking') {
+                // Tunawicara: tampilkan Baca Audio, Video Pendukung, dan Teks Takarir
+                buttonsHtml = `
+                    <button id="audio-guide">🔊 Baca Audio</button>
+                    <button id="video-btn" class="video-support-btn" aria-label="Tonton Video Pendukung" title="Tonton Video Pendukung"><span class="video-icon">🎥</span>Video Pendukung</button>
                     <button id="caption-btn">📝 Teks Takarir (Subtitle)</button>
                 `;
             } else if (userDisability === 'visual') {
@@ -1125,8 +1437,14 @@
                     <button id="vibe-feedback">📳 Getar Feedback</button>
                     <button id="repeat-lesson">🔄 Ulangi Materi</button>
                 `;
+            } else if (userDisability === 'intellectual') {
+                // Tunagrahita: teks simpel, audio jelas, tombol ulangi
+                buttonsHtml = `
+                    <button id="audio-guide">🔊 Baca Audio</button>
+                    <button id="repeat-lesson">🔄 Ulangi Materi</button>
+                `;
             } else {
-                // Lainnya/Tidak Ada: tampilkan semua
+                // Lainnya/Tidak Ada: tampilkan tombol dasar
                 buttonsHtml = `
                     <button id="audio-guide">🔊 Baca Audio</button>
                     <button id="caption-btn">📝 Teks Takarir</button>
@@ -1135,33 +1453,79 @@
             }
 
             cardDiv.innerHTML = `
-            <h2 style="color:var(--primary);">${currentLesson.title}</h2>
-            <div class="lesson-text">${currentLesson.content}</div>
+            <h2 style="color:var(--primary);">${lessonForUser.title}</h2>
+            <div class="lesson-text">${lessonForUser.content}</div>
             <div class="lesson-images">${imgHtml}</div>
             <div class="accessibility-controls">
                 ${buttonsHtml}
+            </div>
+            <div id="sign-video-area" class="sign-video-area" style="display: none;">
+                <button id="close-video" class="close-video-btn" aria-label="Tutup Video">✖</button>
+                <video id="sign-video" controls playsinline preload="metadata" aria-label="Video Pendukung Bahasa Isyarat dengan subtitle">
+                    <source src="${lessonForUser.videoSrc || 'video/support.mp4'}" type="video/mp4">
+                    Browser Anda tidak mendukung elemen video.
+                </video>
+                <div class="video-caption-box" aria-live="polite">${lessonForUser.caption || ''}</div>
+                <p>🤟 Video Pendukung Bahasa Isyarat (SIBI)</p>
             </div>
         `;
             area.style.display = 'block';
             document.body.style.overflow = 'hidden';
 
             // Auto-trigger untuk Tunanetra
-            if (userDisability === 'visual') setTimeout(() => { speak(currentLesson.audioText); vibrate([200]); }, 300);
+            if (userDisability === 'visual' && lessonForUser.audioText) setTimeout(() => { speak(lessonForUser.audioText); vibrate([200]); }, 300);
 
-            // Auto-trigger Teks Takarir untuk Tunarungu
-            if (userDisability === 'hearing') setTimeout(() => {
+            // Auto-trigger Teks Takarir untuk pengguna hearing/speaking
+            if ((userDisability === 'hearing' || userDisability === 'speaking') && lessonForUser.caption) setTimeout(() => {
                 let capDiv = document.getElementById('caption-area');
                 let capText = document.getElementById('caption-text');
                 capDiv.style.display = 'block';
-                capText.innerText = currentLesson.caption;
+                capText.innerText = lessonForUser.caption;
             }, 300);
 
-            // Event listeners
-            document.getElementById('audio-guide')?.addEventListener('click', () => speak(currentLesson.audioText));
+            // Auto-trigger audio untuk Tunagrahita (text-to-speech perlahan)
+            if (userDisability === 'intellectual' && lessonForUser.audioText) setTimeout(() => { speak(lessonForUser.audioText); }, 300);
+
+            // Event listeners - gunakan lessonForUser agar konten sesuai kondisi
+            document.getElementById('audio-guide')?.addEventListener('click', () => speak(lessonForUser.audioText));
             document.getElementById('vibe-feedback')?.addEventListener('click', () => vibrate([300, 150, 300]));
-            document.getElementById('repeat-lesson')?.addEventListener('click', () => { speak(currentLesson.audioText); vibrate([100]); alert("Diulang: " + currentLesson.title); });
-            document.getElementById('sign-lang-btn')?.addEventListener('click', () => { let signDiv = document.getElementById('sign-video-area'); signDiv.style.display = signDiv.style.display === 'none' ? 'block' : 'none'; if (signDiv.style.display === 'block') alert("Video SIBI akan hadir. (Demo: ajari orang tua/guru untuk praktik isyarat)"); });
-            document.getElementById('caption-btn')?.addEventListener('click', () => { let capDiv = document.getElementById('caption-area'); let capText = document.getElementById('caption-text'); if (capDiv.style.display === 'none') { capDiv.style.display = 'block'; capText.innerText = currentLesson.caption; } else capDiv.style.display = 'none'; });
+            document.getElementById('repeat-lesson')?.addEventListener('click', () => { speak(lessonForUser.audioText); vibrate([100]); alert("Diulang: " + lessonForUser.title); });
+            document.getElementById('video-btn')?.addEventListener('click', () => {
+                let signDiv = document.getElementById('sign-video-area');
+                let videoEl = document.getElementById('sign-video');
+                if (signDiv.style.display === 'block') {
+                    signDiv.style.display = 'none';
+                    videoEl.pause();
+                } else {
+                    // ganti sumber video sesuai variant jika tersedia
+                    if (lessonForUser.videoSrc) {
+                        const srcEl = signDiv.querySelector('source');
+                        if (srcEl && srcEl.getAttribute('src') !== lessonForUser.videoSrc) srcEl.setAttribute('src', lessonForUser.videoSrc);
+                        videoEl.load();
+                    }
+                    signDiv.style.display = 'block';
+                    videoEl.currentTime = 0;
+                    videoEl.play().catch(() => { });
+                }
+            });
+            document.getElementById('close-video')?.addEventListener('click', () => {
+                let signDiv = document.getElementById('sign-video-area');
+                let videoEl = document.getElementById('sign-video');
+                signDiv.style.display = 'none';
+                videoEl.pause();
+            });
+            document.addEventListener('keydown', (event) => {
+                if (event.key === 'Escape') {
+                    let signDiv = document.getElementById('sign-video-area');
+                    let videoEl = document.getElementById('sign-video');
+                    if (signDiv && signDiv.style.display === 'block') {
+                        signDiv.style.display = 'none';
+                        videoEl.pause();
+                    }
+                }
+            });
+            document.getElementById('sign-lang-btn')?.addEventListener('click', () => { alert("Video SIBI akan hadir. (Demo: ajari orang tua/guru untuk praktik isyarat)"); });
+            document.getElementById('caption-btn')?.addEventListener('click', () => { let capDiv = document.getElementById('caption-area'); let capText = document.getElementById('caption-text'); if (capDiv.style.display === 'none') { capDiv.style.display = 'block'; capText.innerText = lessonForUser.caption; } else capDiv.style.display = 'none'; });
             saveProgress(subject);
         }
 
