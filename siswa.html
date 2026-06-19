@@ -1027,8 +1027,8 @@
                 <div class="subject-grid">
                     <div class="subject-card" data-subject="global">
                         <div class="subject-icon">🌏🤝</div>
-                        <h3>Global Perspectives</h3>
-                        <p>Keberagaman & kerja sama</p><button class="play-btn">Mulai Belajar</button>
+                        <h3>Bahasa Inggris</h3>
+                        <p>Belajar Bahasa Inggris</p><button class="play-btn">Mulai Belajar</button>
                     </div>
                     <div class="subject-card" data-subject="wellbeing">
                         <div class="subject-icon">😊🧘</div>
@@ -1113,8 +1113,6 @@
 
     <script>
         // ==================== DATA PEMBELAJARAN BERDASARKAN USIA & KONDISI ====================
-        // Struktur: {subject: {title, byAgeAndCondition: {early_visual, early_hearing, early_speaking, early_intellectual, primary_visual, ...}}}
-        // Gunakan kombinasi userAge (early/primary) + userDisability (visual/hearing/speaking/intellectual)
         const lessonData = {
             communication: {
                 title: "🗣️ Komunikasi & Literasi",
@@ -1148,7 +1146,12 @@
                         images: "🤟🍎⚽🍫🧈",
                         videoSrc: "video/sign_communication_early.mp4"
                     },
-                    // === Usia 7-11 Tahun ===
+                }
+            },
+            // === Usia 7-11 Tahun ===
+            global: {
+                title: "🗣️ Bahasa Inggris",
+                byAgeAndCondition: {
                     primary_visual: {
                         content: "Ayo belajar bahasa Inggris.",
                         audioText: "Dog artinya Anjing, Book artinya buku",
@@ -1211,30 +1214,35 @@
                         images: "🐱🐶🐔🐮",
                         videoSrc: "video/support.mp4"
                     },
+                }
+            },
+            wellbeing: {
+                title: "😊 Wellbeing",
+                byAgeAndCondition: {
                     // === Usia 7-11 Tahun ===
                     primary_visual: {
-                        content: "[Tunanetra 7-11] Pelajari habitat, cara hidup, dan suara detail 6-8 macam hewan.",
+                        content: "Pelajari habitat, cara hidup, dan suara detail 6-8 macam hewan.",
                         audioText: "Kucing hidup di rumah, suaranya meong. Anjing penjaga rumah, suaranya guk guk. Sapi hewan ternak...",
                         caption: "[Dunia Hewan] Habitat dan ciri tiap hewan.",
-                        images: "🌍🐾",
+                        images: "",
                         videoSrc: ""
                     },
                     primary_hearing: {
-                        content: "[Tunarungu 7-11] Video isyarat detail tiap hewan + habitat + ciri khusus. Teks takarir lengkap.",
+                        content: "Video isyarat detail tiap hewan + habitat + ciri khusus. Teks takarir lengkap.",
                         audioText: "",
                         caption: "Kucing: hewan peliharaan. Sapi: hewan ternak. Anjing: hewan penjaga rumah. Burung: terbang di langit.",
                         images: "🐱🐄🐕🦅",
                         videoSrc: "video/sign_world_primary.mp4"
                     },
                     primary_speaking: {
-                        content: "[Tunawicara 7-11] Video isyarat hewan lengkap + teks deskripsi. Baca ciri dan tempat hidup.",
+                        content: " Video isyarat hewan lengkap + teks deskripsi. Baca ciri dan tempat hidup.",
                         audioText: "",
                         caption: "Kucing: pemalu, suka bermain. Sapi: hewan besar, pemberi susu. Anjing: setia, penjaga rumah.",
                         images: "🐱🐄🐕👨‍🌾",
                         videoSrc: "video/sign_world_primary.mp4"
                     },
                     primary_intellectual: {
-                        content: "[Tunagrahita 7-11] Hewan dengan deskripsi SANGAT pendek (3-4 kata). Gambar besar dan warna-warni.",
+                        content: "Hewan dengan deskripsi SANGAT pendek (3-4 kata). Gambar besar dan warna-warni.",
                         audioText: "Kucing: hewan peliharaan. Sapi: hewan ternak. Anjing: penjaga rumah. Baik!",
                         caption: "🐱 = hewan peliharaan | 🐄 = hewan ternak | 🐕 = penjaga rumah",
                         images: "🐱🐄🐕",
@@ -1274,30 +1282,35 @@
                         images: "🔢🧮",
                         videoSrc: "video/audio_song_early.mp3"
                     },
+                }
+            },
+            math: {
+                title: "🔢 Mathematics",
+                byAgeAndCondition: {
                     // === Usia 7-11 Tahun ===
                     primary_visual: {
-                        content: "[Tunanetra 7-11] Pelajari lagu nasional atau daerah dengan lirik detail. Belajar musik tradisional.",
+                        content: " Pelajari lagu nasional atau daerah dengan lirik detail. Belajar musik tradisional.",
                         audioText: "Mari belajar lagu 'Indonesia Raya' atau lagu daerah. Dengarkan lirik dan nada dengan perhatian penuh.",
                         caption: "[Kreatif] Lagu nasional dan daerah.",
-                        images: "🎵🇮🇩",
+                        images: "",
                         videoSrc: "video/audio_traditional.mp3"
                     },
                     primary_hearing: {
-                        content: "[Tunarungu 7-11] Video isyarat lagu + teks lengkap. Pelajari arti tiap lirik lagu nasional.",
+                        content: " Video isyarat lagu + teks lengkap. Pelajari arti tiap lirik lagu nasional.",
                         audioText: "",
                         caption: "Indonesia Raya... Tanah airku... Negeri yang kaya...  Lihat isyarat + baca arti!",
                         images: "🇮🇩🎵📝",
                         videoSrc: "video/sign_creative_primary.mp4"
                     },
                     primary_speaking: {
-                        content: "[Tunawicara 7-11] Video isyarat + lirik lagu. Mengerti pesan lagu sambil belajar isyarat.",
+                        content: " Video isyarat + lirik lagu. Mengerti pesan lagu sambil belajar isyarat.",
                         audioText: "",
                         caption: "Lagu Nasional: Indonesia Raya. Lihat gerakan isyarat dan pahami makna setiap kata!",
                         images: "🎵🇮🇩📖",
                         videoSrc: "video/sign_creative_primary.mp4"
                     },
                     primary_intellectual: {
-                        content: "[Tunagrahita 7-11] Lagu sederhana + gerakan mudah. Ulangi berkali-kali untuk membentuk ingatan.",
+                        content: " Lagu sederhana + gerakan mudah. Ulangi berkali-kali untuk membentuk ingatan.",
                         audioText: "Indonesia Raya... (diulang pelan). Hebat! Ulangi lagi!",
                         caption: "Lagu: Indonesia Raya. Gerakan: tangan naik-turun. Ulangi!",
                         images: "🇮🇩👋",
@@ -1305,33 +1318,6 @@
                     }
                 }
             },
-            // global: {
-            //     title: "🌏 Global Perspectives",
-            //     byAgeAndCondition: {
-            //         primary_visual: { content: "[Tunanetra 7-11] Pelajari keberagaman budaya dunia melalui cerita radio.", audioText: "Di dunia ada banyak negara dengan budaya berbeda. Mari pelajari bersama...", caption: "[Global] Keberagaman di dunia.", images: "🌍🤝", videoSrc: "video/support.mp4" },
-            //         primary_hearing: { content: "[Tunarungu 7-11] Video keberagaman + teks. Orang berbeda tapi istimewa!", audioText: "", caption: "Orang di dunia berbeda-beda. Berbeda itu istimewa!", images: "🌍🌈👨‍👩‍👧‍👦", videoSrc: "video/diversity.mp4" },
-            //         primary_speaking: { content: "[Tunawicara 7-11] Video + teks tentang keberagaman dan persatuan.", audioText: "", caption: "Semua orang berbeda. Kita tetap satu keluarga besar!", images: "🤝🌍❤️", videoSrc: "video/diversity.mp4" },
-            //         primary_intellectual: { content: "[Tunagrahita 7-11] Gambar orang berbeda warna kulit + teks: Semua teman!", audioText: "Teman kita berbeda warna. Tapi semua teman!", caption: "Kulit berbeda—tetap teman!", images: "👨🏻👨🏽👨🏿", videoSrc: "video/support.mp4" }
-            //     }
-            // },
-            // wellbeing: {
-            //     title: "😊 Wellbeing",
-            //     byAgeAndCondition: {
-            //         primary_visual: { content: "[Tunanetra 7-11] Cara hidup sehat detail: cuci tangan, sikat gigi, makan sehat, olahraga.", audioText: "Cuci tangan pakai sabun sebelum makan. Sikat gigi 2 kali sehari. Makan makanan bergizi. Tidur cukup.", caption: "[Wellbeing] Hidup sehat.", images: "🧼🪥🥗😴", videoSrc: "video/support.mp4" },
-            //         primary_hearing: { content: "[Tunarungu 7-11] Video cara hidup sehat + teks langkah-langkah detail.", audioText: "", caption: "Cuci tangan | Sikat gigi | Makan sayur | Olahraga | Tidur cukup", images: "🧼🪥🥗🏃😴", videoSrc: "video/health.mp4" },
-            //         primary_speaking: { content: "[Tunawicara 7-11] Video demonstrasi + teks. Cara hidup sehat untuk semua!", audioText: "", caption: "Tangan bersih—kesehatan terjaga! Tidur cukup—pikiran sehat!", images: "✅🧼😊", videoSrc: "video/health.mp4" },
-            //         primary_intellectual: { content: "[Tunagrahita 7-11] Gambar besar 4 hal penting: cuci tangan, sikat gigi, makan sehat, tidur.", audioText: "Bersih—sehat. Makan—sehat. Tidur—sehat. Bagus!", caption: "Bersih = sehat | Makan = sehat | Tidur = sehat", images: "🧼🥗😴🏥", videoSrc: "video/support.mp4" }
-            //     }
-            // },
-            // math: {
-            //     title: "🔢 Mathematics",
-            //     byAgeAndCondition: {
-            //         primary_visual: { content: "[Tunanetra 7-11] Belajar angka 1-20 dengan contoh benda nyata yang bisa disentuh atau suara.", audioText: "Satu, dua, tiga... sampai dua puluh. Bayangkan satu apel, dua bola...", caption: "[Matematika] Angka 1-20.", images: "🔢📚", videoSrc: "video/support.mp4" },
-            //         primary_hearing: { content: "[Tunarungu 7-11] Video angka 1-20 + isyarat + gambar angka besar.", audioText: "", caption: "1 satu | 2 dua | 3 tiga | ... | 20 dua puluh", images: "1️⃣2️⃣3️⃣🔢", videoSrc: "video/numbers.mp4" },
-            //         primary_speaking: { content: "[Tunawicara 7-11] Angka 1-20 + isyarat + teks. Melihat angka sambil belajar gerakan!", audioText: "", caption: "Lihat dan niru gerakan isyarat: satu, dua, tiga... dua puluh!", images: "🤟🔢📖", videoSrc: "video/numbers.mp4" },
-            //         primary_intellectual: { content: "[Tunagrahita 7-11] Angka 1-10 BESAR di layar + gambar benda. 1=apel, 2=bola, dst.", audioText: "Satu apel. Dua bola. Tiga buah. Bagus! Ulangi!", caption: "1🍎 | 2⚽ | 3🟠 | 4🍌 | 5🌟", images: "1️⃣2️⃣3️⃣4️⃣5️⃣", videoSrc: "video/support.mp4" }
-            //     }
-            // }
         };
 
         let currentFont = 18;
