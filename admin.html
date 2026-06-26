@@ -982,9 +982,7 @@
             <nav>
                 <ul id="nav-menu" class="nav-menu">
                     <li><a href="#" data-page="home">🏠 Beranda</a></li>
-                    <!-- <li><a href="#" data-page="learn">📚 Belajar</a></li> -->
                     <li><a href="#" data-page="profile">👤 Profil</a></li>
-                    <!-- <li><a href="#" data-page="help">❓ Bantuan</a></li> -->
                 </ul>
             </nav>
             <div class="accessibility-tools">
@@ -1025,15 +1023,15 @@
                     </div>
                     <div class="nilai-tab-content active" id="tab-tunanetra">
                         <h2>Nilai Tunanetra</h2>
-                        <p>Data nilai Tunanetra akan ditampilkan di sini.</p>
+                        <div id="nilai-list-tunanetra"></div>
                     </div>
                     <div class="nilai-tab-content" id="tab-tunarungu">
                         <h2>Nilai Tunarungu & Tunawicara</h2>
-                        <p>Data nilai Tunarungu & Tunawicara akan ditampilkan di sini.</p>
+                        <div id="nilai-list-tunarungu"></div>
                     </div>
                     <div class="nilai-tab-content" id="tab-tunagrahita">
                         <h2>Nilai Tunagrahita</h2>
-                        <p>Data nilai Tunagrahita akan ditampilkan di sini.</p>
+                        <div id="nilai-list-tunagrahita"></div>
                     </div>
                 </div>
             </section>
@@ -1067,11 +1065,103 @@
             return {
                 tunanetra: 'visual',
                 tunarungu: 'hearing',
+                tunawicara: 'speaking',
                 tunagrahita: 'intellectual',
                 visual: 'visual',
                 hearing: 'hearing',
+                speaking: 'speaking',
                 intellectual: 'intellectual'
             }[normalized] || 'other';
+        }
+
+        const lessonProgressStorageKey = "lessonScores";
+
+        function getConditionGroup(value) {
+            const normalized = normalizeDisability(value);
+            return {
+                visual: 'tunanetra',
+                hearing: 'tunarungu',
+                speaking: 'tunarungu',
+                intellectual: 'tunagrahita'
+            }[normalized] || String(value || 'lainnya').toLowerCase();
+        }
+
+        function getLessonScoreRecords() {
+            try {
+                return JSON.parse(localStorage.getItem(lessonProgressStorageKey)) || [];
+            } catch (error) {
+                return [];
+            }
+        }
+
+        function escapeHtml(value) {
+            return String(value ?? '').replace(/[&<>"']/g, char => ({
+                '&': '&amp;',
+                '<': '&lt;',
+                '>': '&gt;',
+                '"': '&quot;',
+                "'": '&#39;'
+            }[char]));
+        }
+
+        function formatOpenedAt(value) {
+            if (!value) return '-';
+            const date = new Date(value);
+            if (Number.isNaN(date.getTime())) return '-';
+            return date.toLocaleString('id-ID', {
+                day: '2-digit',
+                month: '2-digit',
+                year: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit'
+            });
+        }
+
+        function renderNilaiTable(condition) {
+            const target = document.getElementById(`nilai-list-${condition}`);
+            if (!target) return;
+
+            const records = getLessonScoreRecords()
+                .filter(record => getConditionGroup(record.condition || record.disability) === condition)
+                .sort((a, b) => String(a.name || '').localeCompare(String(b.name || ''), 'id'));
+
+            if (!records.length) {
+                target.innerHTML = `<p>Belum ada siswa yang membuka pelajaran untuk kondisi ini.</p>`;
+                return;
+            }
+
+            const rows = records.map((record, index) => `
+                <tr>
+                    <td>${index + 1}</td>
+                    <td>${escapeHtml(record.nisn || '-')}</td>
+                    <td>${escapeHtml(record.name || '-')}</td>
+                    <td>${escapeHtml(record.lessonTitle || record.subject || '-')}</td>
+                    <td>${escapeHtml(record.status || 'Sudah membuka pelajaran')}</td>
+                    <td>${escapeHtml(record.score ?? 100)}</td>
+                    <td>${formatOpenedAt(record.openedAt)}</td>
+                </tr>
+            `).join('');
+
+            target.innerHTML = `
+                <table class="nilai-tab-table">
+                    <thead>
+                        <tr>
+                            <th>No</th>
+                            <th>NISN</th>
+                            <th>Nama</th>
+                            <th>Pelajaran</th>
+                            <th>Status</th>
+                            <th>Nilai</th>
+                            <th>Waktu Buka</th>
+                        </tr>
+                    </thead>
+                    <tbody>${rows}</tbody>
+                </table>
+            `;
+        }
+
+        function renderAllNilaiTables() {
+            ['tunanetra', 'tunarungu', 'tunagrahita'].forEach(renderNilaiTable);
         }
 
 
@@ -1126,9 +1216,11 @@
         function setActiveNilaiTab(tab) {
             document.querySelectorAll('.nilai-tab-btn').forEach(btn => btn.classList.toggle('active', btn.dataset.tab === tab));
             document.querySelectorAll('.nilai-tab-content').forEach(content => content.classList.toggle('active', content.id === `tab-${tab}`));
+            renderNilaiTable(tab);
         }
 
         function openNilaiTabs(tab) {
+            renderAllNilaiTables();
             document.getElementById('nilai-tabs').style.display = 'flex';
             setActiveNilaiTab(tab);
             document.body.style.overflow = 'hidden';
@@ -1226,7 +1318,12 @@
             if (nameEl) nameEl.value = savedName || '';
             if (idEl) idEl.value = savedNisn || '';
             if (typeof updateProgress === 'function') updateProgress();
+            renderAllNilaiTables();
         }
+
+        window.addEventListener('storage', event => {
+            if (event.key === lessonProgressStorageKey) renderAllNilaiTables();
+        });
 
         initAdminPage();
     </script>
