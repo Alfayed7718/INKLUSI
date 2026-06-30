@@ -412,6 +412,7 @@
         }
 
         .nilai-tab-btn,
+        .export-nilai-pdf,
         .close-nilai-tabs {
             border: none;
             cursor: pointer;
@@ -431,13 +432,19 @@
             color: white;
         }
 
+        .export-nilai-pdf {
+            margin-left: auto;
+            background: var(--success);
+            color: white;
+        }
+
         .nilai-tab-btn:hover,
+        .export-nilai-pdf:hover,
         .close-nilai-tabs:hover {
             transform: translateY(-1px);
         }
 
         .close-nilai-tabs {
-            margin-left: auto;
             background: var(--danger);
             color: white;
             font-size: 1.1rem;
@@ -483,6 +490,52 @@
 
         .nilai-tab-table tbody tr:hover {
             background: rgba(108, 99, 255, 0.05);
+        }
+
+        .lesson-score-list {
+            display: grid;
+            gap: 10px;
+            min-width: 220px;
+        }
+
+        .lesson-score-item {
+            display: grid;
+            gap: 4px;
+        }
+
+        .lesson-score-title {
+            font-weight: 600;
+            color: var(--text);
+        }
+
+        .lesson-score-control {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            min-width: 190px;
+        }
+
+        .lesson-score-input {
+            width: 74px;
+            padding: 8px 10px;
+            border: 1px solid rgba(0, 0, 0, 0.18);
+            border-radius: 8px;
+            font: inherit;
+        }
+
+        .lesson-score-save {
+            border: none;
+            border-radius: 8px;
+            padding: 8px 12px;
+            background: var(--primary);
+            color: white;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .lesson-score-save:hover,
+        .lesson-score-save:focus {
+            background: var(--primary-dark);
         }
 
         /* SDG Info */
@@ -1019,6 +1072,7 @@
                         <button class="nilai-tab-btn active" data-tab="tunanetra">Tunanetra</button>
                         <button class="nilai-tab-btn" data-tab="tunarungu">Tunarungu</button>
                         <button class="nilai-tab-btn" data-tab="tunagrahita">Tunagrahita</button>
+                        <button id="export-nilai-pdf" class="export-nilai-pdf" type="button">Export PDF</button>
                         <button id="close-nilai-tabs" class="close-nilai-tabs" aria-label="Tutup">✕</button>
                     </div>
                     <div class="nilai-tab-content active" id="tab-tunanetra">
@@ -1059,6 +1113,8 @@
         let userDisability = "visual";
         let userAge = parseInt(localStorage.getItem('userAge'), 10) || null;
         let completedLessons = JSON.parse(localStorage.getItem("progress")) || [];
+        let studentClassByNisn = {};
+        let studentClassDataLoaded = false;
 
         function normalizeDisability(value) {
             const normalized = String(value || '').toLowerCase();
@@ -1104,6 +1160,10 @@
             }[char]));
         }
 
+        function escapeAttribute(value) {
+            return escapeHtml(value).replace(/`/g, '&#96;');
+        }
+
         function formatOpenedAt(value) {
             if (!value) return '-';
             const date = new Date(value);
@@ -1117,11 +1177,319 @@
             });
         }
 
+        function getSavedScore(record) {
+            return record?.scoreSaved === true ? Number(record.score || 0) : 0;
+        }
+
+        async function loadStudentClassData() {
+            if (studentClassDataLoaded) return;
+
+            try {
+                const response = await fetch('data.json');
+                if (!response.ok) throw new Error('Data siswa tidak dapat dimuat.');
+                const users = await response.json();
+                studentClassByNisn = users.reduce((result, user) => {
+                    if (user.nisn !== undefined && user.kelas !== undefined) {
+                        result[String(user.nisn)] = String(user.kelas);
+                    }
+                    return result;
+                }, {});
+            } catch (error) {
+                console.error('Gagal memuat data kelas siswa:', error);
+            } finally {
+                studentClassDataLoaded = true;
+            }
+        }
+
+        function getRecordClassName(record) {
+            const storedClass = String(record?.className || '').trim();
+            if (storedClass && storedClass !== '-') return storedClass;
+            return studentClassByNisn[String(record?.nisn || '')] || '-';
+        }
+
+        function normalizeLessonList(record) {
+            if (Array.isArray(record.lessons)) {
+                return record.lessons
+                    .filter(lesson => lesson && (lesson.subject || lesson.lessonTitle))
+                    .map(lesson => Object.assign({}, lesson, {
+                        score: getSavedScore(lesson),
+                        scoreSaved: lesson.scoreSaved === true
+                    }));
+            }
+
+            if (!record.subject && !record.lessonTitle) return [];
+            return [{
+                subject: record.subject || '-',
+                lessonTitle: record.lessonTitle || record.subject || '-',
+                ageLevel: record.ageLevel || '-',
+                score: getSavedScore(record),
+                scoreSaved: record.scoreSaved === true,
+                status: record.status || 'Sudah membuka pelajaran',
+                openedAt: record.openedAt || ''
+            }];
+        }
+
+        function getGroupedLessonScoreRecords() {
+            const grouped = new Map();
+
+            getLessonScoreRecords().forEach(record => {
+                const key = String(record.nisn || record.name || '-');
+                const lessons = normalizeLessonList(record);
+                const existing = grouped.get(key) || {
+                    nisn: record.nisn || '-',
+                    name: record.name || '-',
+                    className: getRecordClassName(record),
+                    condition: record.condition,
+                    disability: record.disability,
+                    lessons: [],
+                    openedAt: record.openedAt || '',
+                    score: getSavedScore(record)
+                };
+
+                existing.name = record.name || existing.name;
+                const recordClassName = getRecordClassName(record);
+                existing.className = recordClassName !== '-' ? recordClassName : existing.className;
+                existing.condition = record.condition || existing.condition;
+                existing.disability = record.disability || existing.disability;
+                if (record.openedAt && (!existing.openedAt || new Date(record.openedAt) > new Date(existing.openedAt))) {
+                    existing.openedAt = record.openedAt;
+                }
+
+                lessons.forEach(lesson => {
+                    const lessonKey = lesson.subject || lesson.lessonTitle;
+                    const index = existing.lessons.findIndex(item => (item.subject || item.lessonTitle) === lessonKey);
+                    if (index >= 0) {
+                        existing.lessons[index] = Object.assign({}, existing.lessons[index], lesson);
+                    } else {
+                        existing.lessons.push(lesson);
+                    }
+                });
+
+                existing.lessonTitle = existing.lessons.map(lesson => lesson.lessonTitle || lesson.subject || '-').join(', ');
+                existing.status = `${existing.lessons.length} materi dibuka`;
+                grouped.set(key, existing);
+            });
+
+            return Array.from(grouped.values());
+        }
+
+        function getLessonKey(lesson) {
+            return String(lesson.subject || lesson.lessonTitle || '-');
+        }
+
+        function getAverageScore(lessons) {
+            const scores = lessons
+                .map(lesson => Number(lesson.score))
+                .filter(score => Number.isFinite(score));
+
+            if (!scores.length) return 0;
+            return Math.round(scores.reduce((total, score) => total + score, 0) / scores.length);
+        }
+
+        function renderLessonTitles(lessons) {
+            return `<div class="lesson-score-list">${lessons.map(lesson => `
+                <div class="lesson-score-item">
+                    <span class="lesson-score-title">${escapeHtml(lesson.lessonTitle || lesson.subject || '-')}</span>
+                    <small>${escapeHtml(lesson.status || 'Sudah membuka pelajaran')} - ${formatOpenedAt(lesson.openedAt)}</small>
+                </div>
+            `).join('')}</div>`;
+        }
+
+        function renderLessonScoreControls(record) {
+            return `<div class="lesson-score-list">${record.lessons.map(lesson => `
+                <div class="lesson-score-control">
+                    <input
+                        class="lesson-score-input"
+                        type="number"
+                        min="0"
+                        max="100"
+                        step="1"
+                        value="${escapeAttribute(lesson.score ?? 0)}"
+                        aria-label="Nilai ${escapeAttribute(lesson.lessonTitle || lesson.subject || '-')}"
+                        data-nisn="${escapeAttribute(record.nisn || '-')}"
+                        data-lesson-key="${escapeAttribute(getLessonKey(lesson))}">
+                    <button
+                        type="button"
+                        class="lesson-score-save"
+                        data-nisn="${escapeAttribute(record.nisn || '-')}"
+                        data-lesson-key="${escapeAttribute(getLessonKey(lesson))}">
+                        Simpan
+                    </button>
+                </div>
+            `).join('')}</div>`;
+        }
+
+        function saveLessonScore(nisn, lessonKey, score) {
+            const records = getGroupedLessonScoreRecords();
+            const student = records.find(record => String(record.nisn || '-') === String(nisn));
+
+            if (!student) return false;
+
+            const lesson = student.lessons.find(item => getLessonKey(item) === String(lessonKey));
+            if (!lesson) return false;
+
+            lesson.score = score;
+            lesson.scoreSaved = true;
+            student.score = getAverageScore(student.lessons);
+            student.lessonTitle = student.lessons.map(item => item.lessonTitle || item.subject || '-').join(', ');
+            student.subject = student.lessons.map(item => item.subject || '-').join(', ');
+            localStorage.setItem(lessonProgressStorageKey, JSON.stringify(records));
+            return true;
+        }
+
+        function toPdfText(value) {
+            return String(value ?? '')
+                .normalize('NFKD')
+                .replace(/[\u0300-\u036f]/g, '')
+                .replace(/[^\x20-\x7E]/g, '')
+                .replace(/[\\()]/g, '\\$&');
+        }
+
+        function splitPdfLine(text, maxLength = 88) {
+            const words = String(text || '').split(/\s+/);
+            const lines = [];
+            let line = '';
+
+            words.forEach(word => {
+                if (!line) {
+                    line = word;
+                    return;
+                }
+
+                if ((line + ' ' + word).length > maxLength) {
+                    lines.push(line);
+                    line = word;
+                } else {
+                    line += ' ' + word;
+                }
+            });
+
+            if (line) lines.push(line);
+            return lines.length ? lines : ['-'];
+        }
+
+        function buildNilaiPdfLines(records) {
+            const conditionNames = {
+                tunanetra: 'Tunanetra',
+                tunarungu: 'Tunarungu & Tunawicara',
+                tunagrahita: 'Tunagrahita'
+            };
+            const lines = [
+                'Laporan Nilai Siswa',
+                `Dicetak: ${new Date().toLocaleString('id-ID')}`,
+                ''
+            ];
+
+            ['tunanetra', 'tunarungu', 'tunagrahita'].forEach(condition => {
+                const conditionRecords = records
+                    .filter(record => getConditionGroup(record.condition || record.disability) === condition)
+                    .sort((a, b) => String(a.name || '').localeCompare(String(b.name || ''), 'id'));
+
+                lines.push(conditionNames[condition]);
+                if (!conditionRecords.length) {
+                    lines.push('Belum ada data nilai.');
+                    lines.push('');
+                    return;
+                }
+
+                conditionRecords.forEach((record, index) => {
+                    lines.push(`${index + 1}. ${record.name || '-'} | NISN: ${record.nisn || '-'} | Kelas: ${record.className || '-'}`);
+                    (record.lessons || []).forEach(lesson => {
+                        const title = lesson.lessonTitle || lesson.subject || '-';
+                        const score = lesson.score ?? 0;
+                        splitPdfLine(`- ${title}: Nilai ${score}`).forEach(line => lines.push(line));
+                    });
+                    lines.push('');
+                });
+            });
+
+            return lines;
+        }
+
+        function createPdfBlob(lines) {
+            const pageWidth = 595;
+            const pageHeight = 842;
+            const marginX = 40;
+            const startY = 800;
+            const lineHeight = 15;
+            const linesPerPage = Math.floor((startY - 45) / lineHeight);
+            const pages = [];
+
+            for (let index = 0; index < lines.length; index += linesPerPage) {
+                pages.push(lines.slice(index, index + linesPerPage));
+            }
+
+            const objects = [];
+            const addObject = content => {
+                objects.push(content);
+                return objects.length;
+            };
+            const catalogId = addObject('');
+            const pagesId = addObject('');
+            const fontId = addObject('<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>');
+            const pageIds = [];
+
+            pages.forEach(pageLines => {
+                const commands = ['BT', '/F1 10 Tf', '12 TL'];
+                pageLines.forEach((line, lineIndex) => {
+                    const y = startY - (lineIndex * lineHeight);
+                    commands.push(`1 0 0 1 ${marginX} ${y} Tm (${toPdfText(line)}) Tj`);
+                });
+                commands.push('ET');
+
+                const stream = commands.join('\n');
+                const contentId = addObject(`<< /Length ${stream.length} >>\nstream\n${stream}\nendstream`);
+                const pageId = addObject(`<< /Type /Page /Parent ${pagesId} 0 R /MediaBox [0 0 ${pageWidth} ${pageHeight}] /Resources << /Font << /F1 ${fontId} 0 R >> >> /Contents ${contentId} 0 R >>`);
+                pageIds.push(pageId);
+            });
+
+            objects[catalogId - 1] = `<< /Type /Catalog /Pages ${pagesId} 0 R >>`;
+            objects[pagesId - 1] = `<< /Type /Pages /Kids [${pageIds.map(id => `${id} 0 R`).join(' ')}] /Count ${pageIds.length} >>`;
+
+            let pdf = '%PDF-1.4\n';
+            const offsets = [0];
+            objects.forEach((object, index) => {
+                offsets.push(pdf.length);
+                pdf += `${index + 1} 0 obj\n${object}\nendobj\n`;
+            });
+
+            const xrefOffset = pdf.length;
+            pdf += `xref\n0 ${objects.length + 1}\n0000000000 65535 f \n`;
+            offsets.slice(1).forEach(offset => {
+                pdf += `${String(offset).padStart(10, '0')} 00000 n \n`;
+            });
+            pdf += `trailer\n<< /Size ${objects.length + 1} /Root ${catalogId} 0 R >>\nstartxref\n${xrefOffset}\n%%EOF`;
+
+            return new Blob([pdf], { type: 'application/pdf' });
+        }
+
+        async function exportNilaiPdf() {
+            const confirmed = confirm('Pastikan semua perubahan nilai sudah disimpan. Buat file PDF nilai siswa sekarang?');
+            if (!confirmed) return;
+
+            await loadStudentClassData();
+            const records = getGroupedLessonScoreRecords();
+            if (!records.length) {
+                alert('Belum ada data nilai untuk dibuat PDF.');
+                return;
+            }
+
+            const blob = createPdfBlob(buildNilaiPdfLines(records));
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = `laporan-nilai-siswa-${new Date().toISOString().slice(0, 10)}.pdf`;
+            document.body.appendChild(link);
+            link.click();
+            link.remove();
+            URL.revokeObjectURL(url);
+        }
+
         function renderNilaiTable(condition) {
             const target = document.getElementById(`nilai-list-${condition}`);
             if (!target) return;
 
-            const records = getLessonScoreRecords()
+            const records = getGroupedLessonScoreRecords()
                 .filter(record => getConditionGroup(record.condition || record.disability) === condition)
                 .sort((a, b) => String(a.name || '').localeCompare(String(b.name || ''), 'id'));
 
@@ -1135,9 +1503,10 @@
                     <td>${index + 1}</td>
                     <td>${escapeHtml(record.nisn || '-')}</td>
                     <td>${escapeHtml(record.name || '-')}</td>
-                    <td>${escapeHtml(record.lessonTitle || record.subject || '-')}</td>
+                    <td>${escapeHtml(record.className || '-')}</td>
+                    <td>${renderLessonTitles(record.lessons || [])}</td>
                     <td>${escapeHtml(record.status || 'Sudah membuka pelajaran')}</td>
-                    <td>${escapeHtml(record.score ?? 100)}</td>
+                    <td>${renderLessonScoreControls(record)}</td>
                     <td>${formatOpenedAt(record.openedAt)}</td>
                 </tr>
             `).join('');
@@ -1149,6 +1518,7 @@
                             <th>No</th>
                             <th>NISN</th>
                             <th>Nama</th>
+                            <th>Kelas</th>
                             <th>Pelajaran</th>
                             <th>Status</th>
                             <th>Nilai</th>
@@ -1219,7 +1589,8 @@
             renderNilaiTable(tab);
         }
 
-        function openNilaiTabs(tab) {
+        async function openNilaiTabs(tab) {
+            await loadStudentClassData();
             renderAllNilaiTables();
             document.getElementById('nilai-tabs').style.display = 'flex';
             setActiveNilaiTab(tab);
@@ -1240,6 +1611,30 @@
         });
 
         document.getElementById('close-nilai-tabs')?.addEventListener('click', closeNilaiTabs);
+        document.getElementById('export-nilai-pdf')?.addEventListener('click', exportNilaiPdf);
+        document.getElementById('nilai-tabs')?.addEventListener('click', event => {
+            const button = event.target.closest('.lesson-score-save');
+            if (!button) return;
+
+            const input = button.parentElement.querySelector('.lesson-score-input');
+            const score = Number(input?.value);
+
+            if (!Number.isFinite(score) || score < 0 || score > 100) {
+                alert('Nilai harus berupa angka 0 sampai 100.');
+                input?.focus();
+                return;
+            }
+
+            const saved = saveLessonScore(button.dataset.nisn, button.dataset.lessonKey, score);
+            if (!saved) {
+                alert('Data nilai tidak ditemukan.');
+                return;
+            }
+
+            alert('Nilai berhasil disimpan.');
+            const activeTab = document.querySelector('.nilai-tab-btn.active')?.dataset.tab;
+            if (activeTab) renderNilaiTable(activeTab);
+        });
 
         // Event subject cards
         document.querySelectorAll('.subject-card').forEach(card => { card.addEventListener('click', () => { let sub = card.dataset.subject; if (sub) openLesson(sub); }); card.querySelector('.play-btn')?.addEventListener('click', (e) => { e.stopPropagation(); let sub = card.dataset.subject; if (sub) openLesson(sub); }); });
