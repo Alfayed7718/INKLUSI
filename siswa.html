@@ -41,6 +41,7 @@
             font-family: 'Segoe UI', 'Poppins', 'Quicksand', sans-serif;
             background: linear-gradient(135deg, #F5F7FA 0%, #E4E8F0 100%);
             min-height: 100vh;
+            overflow-x: hidden;
         }
 
         /* Mode Kontras Tinggi (tetap warna cerah tapi kontras) */
@@ -188,13 +189,22 @@
             display: flex;
             align-items: center;
             gap: 10px;
-            font-size: 1.8rem;
+            flex: 1 1 260px;
+            min-width: 0;
+            font-size: clamp(1.25rem, 2.4vw, 1.8rem);
             font-weight: bold;
             background: linear-gradient(135deg, #FFE259, #FFA751);
             -webkit-background-clip: text;
             background-clip: text;
             color: transparent;
             text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .logo a {
+            display: block;
+            max-width: 100%;
+            overflow-wrap: anywhere;
+            line-height: 1.25;
         }
 
         body.high-contrast .logo {
@@ -207,10 +217,14 @@
         .nav-menu {
             display: flex;
             list-style: none;
+            flex-wrap: wrap;
             gap: 12px;
         }
 
         .nav-menu li a {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
             color: white;
             text-decoration: none;
             padding: 10px 20px;
@@ -219,6 +233,8 @@
             font-weight: 600;
             background: rgba(255, 255, 255, 0.2);
             backdrop-filter: blur(5px);
+            min-height: 44px;
+            white-space: nowrap;
         }
 
         .nav-menu li a:hover,
@@ -231,11 +247,13 @@
             display: none;
             background: white;
             border: none;
-            font-size: 1.8rem;
-            padding: 8px 16px;
+            font-size: 1.4rem;
+            line-height: 1;
+            padding: 10px 16px;
             border-radius: 40px;
             cursor: pointer;
             color: black;
+            min-height: 44px;
         }
 
         /* Tools Aksesibilitas */
@@ -254,6 +272,7 @@
             cursor: pointer;
             font-weight: bold;
             transition: all 0.2s;
+            min-height: 40px;
         }
 
         .accessibility-tools button:hover {
@@ -560,9 +579,10 @@
         }
 
         #close-learning {
-            position: absolute;
-            top: 20px;
-            right: 20px;
+            position: fixed;
+            top: 18px;
+            right: 18px;
+            z-index: 1200;
             background: var(--danger);
             padding: 12px 24px;
             border-radius: 40px;
@@ -745,8 +765,8 @@
             }
 
             .accessibility-tools {
-                width: 100%;
                 justify-content: space-between;
+                width: 100%;
                 gap: 10px;
             }
 
@@ -853,27 +873,55 @@
         }
 
         @media (max-width: 768px) {
+            .header-container {
+                flex-direction: row;
+                align-items: center;
+                gap: 12px;
+            }
+
+            .logo {
+                flex: 1 1 calc(100% - 96px);
+                text-align: left;
+            }
+
+            #nav-toggle {
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+                flex: 0 0 auto;
+                width: auto;
+                min-width: 52px;
+                box-shadow: 0 8px 24px rgba(0, 0, 0, 0.16);
+            }
+
+            nav {
+                order: 3;
+                width: 100%;
+            }
+
             .nav-menu {
                 display: none;
                 flex-direction: column;
                 width: 100%;
-                background: var(--primary);
-                padding: 15px;
-                border-radius: 20px;
+                background: rgba(255, 255, 255, 0.96);
+                padding: 12px;
+                border-radius: 18px;
+                gap: 8px;
+                box-shadow: 0 14px 34px rgba(0, 0, 0, 0.18);
             }
 
             .nav-menu.show {
                 display: flex;
             }
 
-            #nav-toggle {
-                display: block;
-            }
-
             .nav-menu li a {
                 padding: 12px 16px;
                 width: 100%;
                 text-align: center;
+                color: var(--primary-dark);
+                background: rgba(108, 99, 255, 0.1);
+                border-radius: 14px;
+                white-space: normal;
             }
 
             .hero h1 {
@@ -905,12 +953,16 @@
             }
 
             .accessibility-tools {
-                gap: 6px;
+                order: 4;
+                width: 100%;
+                display: grid;
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+                gap: 8px;
             }
 
             .accessibility-tools button {
-                padding: 10px 12px;
-                font-size: 0.95rem;
+                padding: 10px 8px;
+                font-size: 0.9rem;
             }
 
             .help-section {
@@ -920,6 +972,115 @@
             footer {
                 padding: 18px 16px;
                 font-size: 0.95rem;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .header-container {
+                gap: 12px;
+            }
+
+            .logo {
+                font-size: 1.12rem;
+            }
+
+            .nav-menu li a {
+                padding: 10px 14px;
+                font-size: 0.95rem;
+            }
+
+            .accessibility-tools {
+                gap: 8px;
+            }
+
+            .accessibility-tools button {
+                padding: 10px 8px;
+                font-size: 0.9rem;
+            }
+
+            main {
+                padding: 20px 16px;
+            }
+
+            .hero {
+                padding: 38px 18px;
+            }
+
+            .hero h1 {
+                font-size: 1.8rem;
+            }
+
+            .hero p {
+                font-size: 1rem;
+            }
+
+            .cta-button {
+                width: 100%;
+                padding: 14px 18px;
+                font-size: 1rem;
+            }
+
+            .features,
+            .subject-grid {
+                gap: 18px;
+            }
+
+            .feature-card,
+            .subject-card {
+                padding: 22px 16px;
+            }
+
+            .feature-icon,
+            .subject-icon {
+                font-size: 3rem;
+            }
+
+            .level-selector {
+                gap: 10px;
+            }
+
+            .level-btn {
+                width: 100%;
+                padding: 12px 16px;
+                font-size: 0.95rem;
+            }
+
+            .play-btn {
+                width: 100%;
+            }
+
+            .learning-area {
+                padding: 30px 14px;
+            }
+
+            .lesson-card {
+                padding: 28px 22px;
+            }
+
+            .lesson-text {
+                font-size: 1.15rem;
+            }
+
+            .lesson-images div {
+                font-size: 3rem;
+                padding: 14px;
+            }
+
+            .profile-form {
+                padding: 22px;
+            }
+
+            .profile-form input,
+            .profile-form select {
+                font-size: 0.95rem;
+            }
+
+            .help-content {
+                padding: 18px;
+            }
+
+            footer {
+                padding: 16px 14px;
             }
         }
     </style>
@@ -943,7 +1104,7 @@
         <div class="header-container">
             <div class="logo"><a href="#" data-page="home" style="text-decoration: none; color: #FFF;">🌈 INKLUSI App |
                     Belajar Asyik Untuk Semua</a></div>
-            <button id="nav-toggle" aria-label="Menu">☰ Menu</button>
+            <button id="nav-toggle" aria-label="Menu">☰</button>
             <nav>
                 <ul id="nav-menu" class="nav-menu">
                     <li><a href="#" data-page="home">🏠 Beranda</a></li>
@@ -956,7 +1117,6 @@
                 <button id="font-plus" aria-label="Perbesar teks">A+</button>
                 <button id="font-minus" aria-label="Perkecil teks">A-</button>
                 <button id="high-contrast" aria-label="Mode kontras">🌓 Kontras</button>
-                <button id="read-mode" aria-label="Mode baca">📖 Mode Baca</button>
                 <button id="logout" aria-label="Keluar">🔓 Logout</button>
             </div>
         </div>
@@ -987,22 +1147,14 @@
                     <p>🖼️ Gambar Besar &nbsp;|&nbsp; 🔁 Belajar Berulang &nbsp;|&nbsp; 📖 Cerita Singkat</p>
                 </div>
             </div>
-            <!-- <div class="sdg-info">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/8c/Sustainable_Development_Goal_4.png/120px-Sustainable_Development_Goal_4.png"
-                    alt="SDG 4">
-                <div>
-                    <h3>🌍 Mendukung Sustainable Development Goals 4</h3>
-                    <p>Pendidikan Inklusif, Merata, dan Berkualitas untuk Semua Anak Indonesia</p>
-                </div>
-            </div> -->
         </section>
 
         <!-- Halaman Belajar -->
         <section id="learn-page" class="page">
             <h1 style="color: var(--primary); text-align: center;">📖 Pilih Materi Belajar Favoritmu</h1>
             <div class="level-selector">
-                <button class="level-btn active" data-level="early">🎈 Usia 3-6 Tahun (Early Years)</button>
-                <button class="level-btn" data-level="primary">🌟 Usia 7-11 Tahun (Primary)</button>
+                <button class="level-btn active" data-level="early" style="cursor: none;">🎈 Usia 3-6 Tahun</button>
+                <button class="level-btn" data-level="primary" style="cursor: none;">🌟 Usia 7-11 Tahun</button>
             </div>
             <div id="early-level" class="level-content active">
                 <div class="subject-grid">

@@ -12,7 +12,6 @@
 
 <body>
     <script>
-        // Jika sudah login di tab ini, arahkan sesuai level (admin -> admin.html, selainnya -> siswa.html)
         (function () {
             const logged = localStorage.getItem('loggedIn') === 'true';
             if (!logged) return;
@@ -47,14 +46,6 @@
                         </svg>
                     </div>
                 </div>
-                <!-- pilihan disabilitas -->
-                <!-- <div class="disabil">
-                    <select id="disability">
-                        <option value="visual">Tunanetra</option>
-                        <option value="hearing">Tunarungu/Tunawicara</option>
-                        <option value="intellectual">Tunagrahita</option>
-                    </select>
-                </div> -->
                 <button type="submit" class="form-btn form-btn--submit">Login</button>
             </form>
         </div>

@@ -41,6 +41,7 @@
             font-family: 'Segoe UI', 'Poppins', 'Quicksand', sans-serif;
             background: linear-gradient(135deg, #F5F7FA 0%, #E4E8F0 100%);
             min-height: 100vh;
+            overflow-x: hidden;
         }
 
         /* Mode Kontras Tinggi (tetap warna cerah tapi kontras) */
@@ -188,13 +189,22 @@
             display: flex;
             align-items: center;
             gap: 10px;
-            font-size: 1.8rem;
+            flex: 1 1 260px;
+            min-width: 0;
+            font-size: clamp(1.25rem, 2.4vw, 1.8rem);
             font-weight: bold;
             background: linear-gradient(135deg, #FFE259, #FFA751);
             -webkit-background-clip: text;
             background-clip: text;
             color: transparent;
             text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .logo a {
+            display: block;
+            max-width: 100%;
+            overflow-wrap: anywhere;
+            line-height: 1.25;
         }
 
         body.high-contrast .logo {
@@ -207,10 +217,14 @@
         .nav-menu {
             display: flex;
             list-style: none;
+            flex-wrap: wrap;
             gap: 12px;
         }
 
         .nav-menu li a {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
             color: white;
             text-decoration: none;
             padding: 10px 20px;
@@ -219,6 +233,8 @@
             font-weight: 600;
             background: rgba(255, 255, 255, 0.2);
             backdrop-filter: blur(5px);
+            min-height: 44px;
+            white-space: nowrap;
         }
 
         .nav-menu li a:hover,
@@ -231,11 +247,13 @@
             display: none;
             background: white;
             border: none;
-            font-size: 1.8rem;
-            padding: 8px 16px;
+            font-size: 1.4rem;
+            line-height: 1;
+            padding: 10px 16px;
             border-radius: 40px;
             cursor: pointer;
             color: black;
+            min-height: 44px;
         }
 
         /* Tools Aksesibilitas */
@@ -254,6 +272,7 @@
             cursor: pointer;
             font-weight: bold;
             transition: all 0.2s;
+            min-height: 40px;
         }
 
         .accessibility-tools button:hover {
@@ -884,16 +903,28 @@
         @media (max-width: 768px) {
 
             .header-container {
-                flex-direction: column;
-                align-items: stretch;
+                flex-direction: row;
+                align-items: center;
+                gap: 12px;
+            }
+
+            .logo {
+                flex: 1 1 calc(100% - 72px);
+                text-align: left;
             }
 
             #nav-toggle {
-                display: block;
-                width: 100%;
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+                flex: 0 0 auto;
+                width: auto;
+                min-width: 52px;
+                box-shadow: 0 8px 24px rgba(0, 0, 0, 0.16);
             }
 
             nav {
+                order: 3;
                 width: 100%;
             }
 
@@ -901,10 +932,11 @@
                 display: none;
                 flex-direction: column;
                 width: 100%;
-                background: var(--primary);
-                padding: 10px;
-                border-radius: 15px;
-                gap: 10px;
+                background: rgba(255, 255, 255, 0.96);
+                padding: 12px;
+                border-radius: 18px;
+                gap: 8px;
+                box-shadow: 0 14px 34px rgba(0, 0, 0, 0.18);
             }
 
             .nav-menu.show {
@@ -919,13 +951,19 @@
                 display: block;
                 width: 100%;
                 text-align: center;
-                padding: 12px;
+                padding: 12px 14px;
+                color: var(--primary-dark);
+                background: rgba(108, 99, 255, 0.1);
+                border-radius: 14px;
+                white-space: normal;
             }
 
             .accessibility-tools {
+                order: 4;
                 width: 100%;
-                justify-content: center;
-                flex-wrap: wrap;
+                display: grid;
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+                gap: 8px;
             }
 
             .hero h1 {
@@ -943,7 +981,7 @@
             }
 
             .logo {
-                font-size: 1.3rem;
+                font-size: 1.12rem;
             }
 
             .nav-menu li a {
@@ -956,8 +994,8 @@
             }
 
             .accessibility-tools button {
-                padding: 10px 12px;
-                font-size: 0.95rem;
+                padding: 10px 8px;
+                font-size: 0.9rem;
             }
 
             .feature-card {
@@ -998,6 +1036,21 @@
 
             .nilai-tab-content {
                 padding: 16px;
+            }
+
+            .nilai-tab-table {
+                display: block;
+                overflow-x: auto;
+                white-space: nowrap;
+            }
+
+            .lesson-score-control {
+                flex-wrap: wrap;
+                min-width: 0;
+            }
+
+            .lesson-score-save {
+                flex: 1 1 100%;
             }
 
             .profile-form {
@@ -1042,7 +1095,6 @@
                 <button id="font-plus" aria-label="Perbesar teks">A+</button>
                 <button id="font-minus" aria-label="Perkecil teks">A-</button>
                 <button id="high-contrast" aria-label="Mode kontras">🌓 Kontras</button>
-                <!-- <button id="read-mode" aria-label="Mode baca">📖 Mode Baca</button> -->
                 <button id="logout" aria-label="Keluar">🔓 Logout</button>
             </div>
         </div>
